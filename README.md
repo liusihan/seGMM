@@ -1,7 +1,10 @@
-# seGMM[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+# seGMM
+[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 ## Description
 `seGMM` is a tool that determines the gender of a sample from the called genotype data integrated BAM files and jointly considers information on the X and Y chromosomes in diverse genotype data including `panel data`. seGMM apply `Gaussian Mixture Model (GMM)` clustering to classify the samples into two clusters.<br>
+
 ![](https://github.com/liusihan/seGMM/blob/main/Workflow.GIF)  
+
 ### If you use seGMM, please cite our preprint (thanks!):
 >Sihan Liu (2021) seGMM: a new tool to infer sex from massively parallel sequencing data. bioRxiv
 
@@ -23,8 +26,6 @@ source activate seGMM
 ```
 sh seGMM.sh vcf.gz bam.list output
 ```
-## Contributing
-
 
 ## License
 MIT © Richard McRichface
