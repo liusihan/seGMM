@@ -36,6 +36,11 @@ to print a list of all command-line options.
 ```
 sh seGMM.sh -i vcf.gz -b bam.list -c x(y/b) -s n(y) -o output
 ```
+- `-i`: input vcf file (vcf or vcf.gz).
+- `-b`: file contain sample ID and directory of bam file(no header, space separated).
+- `-c`: choose chromosome you want to use. Optional is x and y and b(both).
+- `-s`: Including SRY gene or not.Optional is y and n.
+- `-o`: Prefix of output file. (If not exist, seGMM will create it!)
 
 ## License
-MIT © Richard McRichface
+MIT ©
