@@ -14,7 +14,7 @@ function usage() {
         exit -1
 }
 
-while getopts "h:i:b:c:s:o:" opt
+while getopts "hi:b:c:s:o:" opt
 do
     case $opt in
             i)
