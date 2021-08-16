@@ -26,9 +26,15 @@ conda env create -f environment.yaml
 source activate seGMM
 ```
 
+Once the above has completed, you can run:
+```
+sh seGMM.sh -h
+```
+to print a list of all command-line options. 
+
 ## Usage
 ```
-sh seGMM.sh vcf.gz bam.list output
+sh seGMM.sh -i vcf.gz -b bam.list -c x(y/b) -s n(y) -o output
 ```
 
 ## License
