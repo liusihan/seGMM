@@ -2,7 +2,7 @@
 
 function usage() {
         echo "USAGE:"
-        echo "sh seGMM.sh [-h] [-i <filename>] [-b <Bamlist>] [-c <Chromosome(x/y/b)>] [-s <y/n>] [-o <filename>]"
+        echo "sh seGMM.sh [-h] [-i <filename>] [-b <Bamlist>] [-c <Chromosome(x/y/b)>] [-s <y/n>] [-v] [-o <filename>]"
         echo "    -h help"
         echo "    -v genome version(default: hg19. If your vcf data is mapping to hg38, please use this parameter with no value!)"
         echo "    -i input vcf file"
