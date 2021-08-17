@@ -1,6 +1,4 @@
 #!/bin/sh
-# MAKE SURE index.r RNA_processing.r and FDR.r ARE IN YOUR PATH
-# FILL IN THESE PATHS
 
 function usage() {
         echo "USAGE:"
