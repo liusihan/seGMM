@@ -6,6 +6,7 @@ function usage() {
         echo "USAGE:"
         echo "sh seGMM.sh [-h] [-i <filename>] [-b <Bamlist>] [-c <Chromosome(x/y/b)>] [-s <y/n>] [-o <filename>]"
         echo "    -h help"
+        echo "    -v genome version(default: hg19. If your vcf data is mapping to hg38, please use this parameter with no value!)"
         echo "    -i input vcf file"
         echo "    -b file contain sampleid and directory of bam file (no header)"
         echo "    -c Sex chromosome to use collect features. optional x,y,b"
@@ -13,6 +14,8 @@ function usage() {
         echo "    -o Prefix of output directory"
         exit -1
 }
+
+version=19
 
 while getopts "hi:b:c:s:o:" opt
 do
@@ -53,6 +56,9 @@ do
                 usage
                 exit
                 ;;
+            v)
+                version=38
+                ;;
             :)
                 echo "the option -$OPTARG require an arguement"
                 usage
@@ -64,6 +70,8 @@ do
                 ;;
     esac
 done
+
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ $chr = "x" ]; then
     #Collect feature 1: X het rate
@@ -89,7 +97,7 @@ elif [ $chr = "y" ]; then
         if [ ! -d "$Outputdir/SRY" ]; then
             mkdir $Outputdir/SRY
         fi
-        cat $bam | awk 'NR>=2{print $1,$4}' | while read id dir; do mosdepth -t 4 -Q 30 -b $basename/SRY.exon.bed -n $Outputdir/SRY/$id $dir; done
+        cat $bam | awk 'NR>=2{print $1,$4}' | while read id dir; do mosdepth -t 4 -Q 30 -b $script_dir/SRY_hg"$version".bed -n $Outputdir/SRY/$id $dir; done
         ls $Outputdir/SRY/*.mosdepth.summary.txt | awk '{split($1,a,".");split(a[1],b,"/");print b[length(b)]}' | while read id; do cat $Outputdir/SRY/$id.mosdepth.summary.txt | tail -n 1 | awk 'BEGIN{OFS="\t"}{print "'$i'",$4}'; done | sort -k 1 >$Outputdir/SRY.txt
         paste $Outputdir/Ymap.txt $Outputdir/SRY.txt | cut -f1,2,4 | awk 'BEGIN{OFS="\t";print "sampleid","Ymap","SRY"}{print $0}' >$Outputdir/feature.txt
     fi
@@ -110,7 +118,7 @@ elif [ $chr = "b" ]; then
         if [ ! -d "$Outputdir/SRY" ]; then
             mkdir $Outputdir/SRY
         fi
-        cat $bam | awk 'NR>=2{print $1,$4}' | while read id dir; do mosdepth -t 4 -Q 30 -b $basename/SRY.exon.bed -n $Outputdir/SRY/$id $dir; done
+        cat $bam | awk 'NR>=2{print $1,$4}' | while read id dir; do mosdepth -t 4 -Q 30 -b $script_dir/SRY_hg"$version".bed -n $Outputdir/SRY/$id $dir; done
         ls $Outputdir/SRY/*.mosdepth.summary.txt | awk '{split($1,a,".");split(a[1],b,"/");print b[length(b)]}' | while read id; do cat $Outputdir/SRY/$id.mosdepth.summary.txt | tail -n 1 | awk 'BEGIN{OFS="\t"}{print "'$i'",$4}'; done | sort -k 1 >$Outputdir/SRY.txt
         paste $Outputdir/XH.txt $Outputdir/Xmap.txt $Outputdir/Ymap.txt $Outputdir/SRY.txt | cut -f1,2,4,6,8 | awk 'BEGIN{OFS="\t";print "sampleid","XH","Xmap",Ymap","XYratio","SRY"}{print $1,$2,$3,$2/$3,$4,$5}' >$Outputdir/feature.txt
     fi
@@ -120,5 +128,4 @@ else
     exit
 fi
 
-script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 Rscript $script_dir/seGMM.r $Outputdir/feature.txt $Outputdir/
