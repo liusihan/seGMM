@@ -41,6 +41,7 @@ sh seGMM.sh -i vcf.gz -b bam.list -c x(y/b) -s n(y) -o output
 - `-c`: choose chromosome you want to use. Optional is x and y and b(both).
 - `-s`: Including SRY gene or not.Optional is y and n.
 - `-o`: Prefix of output file. (If not exist, seGMM will create it!)
+- `-v`: Genome version(default: hg19. If your vcf data is mapping to hg38, please use this parameter with no value!). 
 
 ## License
 MIT ©
