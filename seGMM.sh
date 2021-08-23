@@ -73,7 +73,8 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ $chr = "x" ]; then
     #Collect feature 1: X het rate
-    plink --vcf $vcf --recode  --out $Outputdir/plink
+    plink --vcf $vcf --make-bed  --out $Outputdir/plink
+    plink --bfile $Outputdir/plink --recode  --out $Outputdir/plink
     cat $Outputdir/plink.ped | awk 'BEGIN{OFS="\t"}{het=0;hom=0;missing=0;all=0;for(i=1;i<=((NF-6)/2);i++){if($(i*2+5)!=$(2*i+6)){het++;all++}else if($(i*2+5)==0){missing++;all++}else{hom++;all++}};if(all!=missing){print $1,het/(all-missing)}else{print $1,0};het=0;hom=0;missing=0;all=0}' | sort -k 1 >$Outputdir/XH.txt
         #Collect feature of X mapping rate
     if [ ! -d "$Outputdir/Reads_stat" ]; then
@@ -81,7 +82,7 @@ if [ $chr = "x" ]; then
     fi
     cat $bam | awk '{print $1"\n"$2}' | parallel -j 10 --max-args 2 samtools view -bh -q 30 {2} X \| samtools flagstat - \>$Outputdir/Reads_stat\/{1}.X.stat
     cat $bam | awk '{print $1"\n"$2}' | parallel -j 10 --max-args 2 samtools view -bh -q 30 {2} \| samtools flagstat - \>$Outputdir/Reads_stat\/{1}.total.stat
-    ls $Outputdir/Reads_stat/*.X.stat | awk '{split($1,a,".");split(a[1],b,"/");print b[length(b)]}' | while read id; do paste -d' ' $Outputdir/Reads_stat/$id.X.stat $Outputdir/Reads_stat/$id.total.stat | sed -n '5p' | cut -d ' ' -f1,8,15| sed 's/^/'$id' /'; done | awk 'BEGIN{OFS="\t"}{print $1,$2/$3}' | sort -k 1 >$Outputdir/Xmap.txt
+    cat $bam | awk '{print $1}' | while read id; do paste -d' ' $Outputdir/Reads_stat/$id.X.stat $Outputdir/Reads_stat/$id.total.stat | sed -n '5p' | cut -d ' ' -f1,8,15| sed 's/^/'$id' /'; done | awk 'BEGIN{OFS="\t"}{print $1,$2/$3}' | sort -k 1 >$Outputdir/Xmap.txt
     paste $Outputdir/XH.txt $Outputdir/Xmap.txt | cut -f1,2,4 | awk 'BEGIN{OFS="\t";print "sampleid","XH","Xmap"}{print $0}' >$Outputdir/feature.txt
 elif [ $chr = "y" ]; then
     if [ ! -d "$Outputdir/Reads_stat" ]; then
@@ -89,18 +90,19 @@ elif [ $chr = "y" ]; then
     fi
     cat $bam | awk '{print $1"\n"$2}' | parallel -j 10 --max-args 2 samtools view -bh -q 30 {2} Y \| samtools flagstat - \>$Outputdir/Reads_stat\/{1}.Y.stat
     cat $bam | awk '{print $1"\n"$2}' | parallel -j 10 --max-args 2 samtools view -bh -q 30 {2} \| samtools flagstat - \>$Outputdir/Reads_stat\/{1}.total.stat
-    ls $Outputdir/Reads_stat/*.Y.stat | awk '{split($1,a,".");split(a[1],b,"/");print b[length(b)]}' | while read id; do paste -d' ' $Outputdir/Reads_stat/$id.Y.stat $Outputdir/Reads_stat/$id.total.stat | sed -n '5p' | cut -d ' ' -f1,8,15| sed 's/^/'$id' /'; done | awk 'BEGIN{OFS="\t"}{print $1,$2/$3}' | sort -k 1 >$Outputdir/Ymap.txt
+    cat $bam | awk '{print $1}' | while read id; do paste -d' ' $Outputdir/Reads_stat/$id.Y.stat $Outputdir/Reads_stat/$id.total.stat | sed -n '5p' | cut -d ' ' -f1,8,15| sed 's/^/'$id' /'; done | awk 'BEGIN{OFS="\t"}{print $1,$2/$3}' | sort -k 1 >$Outputdir/Ymap.txt
     cat $Outputdir/Ymap.txt | awk 'BEGIN{OFS="\t";print "sampleid","Ymap"}{print $0}' >$Outputdir/feature.txt
     if [ $use_SRY != "y" ]; then
         if [ ! -d "$Outputdir/SRY" ]; then
             mkdir $Outputdir/SRY
         fi
         cat $bam | awk 'NR>=2{print $1,$4}' | while read id dir; do mosdepth -t 4 -Q 30 -b $script_dir/SRY_hg"$version".bed -n $Outputdir/SRY/$id $dir; done
-        ls $Outputdir/SRY/*.mosdepth.summary.txt | awk '{split($1,a,".");split(a[1],b,"/");print b[length(b)]}' | while read id; do cat $Outputdir/SRY/$id.mosdepth.summary.txt | tail -n 1 | awk 'BEGIN{OFS="\t"}{print "'$i'",$4}'; done | sort -k 1 >$Outputdir/SRY.txt
+        cat $bam | awk '{print $1}' | while read id; do cat $Outputdir/SRY/$id.mosdepth.summary.txt | tail -n 1 | awk 'BEGIN{OFS="\t"}{print "'$i'",$4}'; done | sort -k 1 >$Outputdir/SRY.txt
         paste $Outputdir/Ymap.txt $Outputdir/SRY.txt | cut -f1,2,4 | awk 'BEGIN{OFS="\t";print "sampleid","Ymap","SRY"}{print $0}' >$Outputdir/feature.txt
     fi
 elif [ $chr = "b" ]; then
-    plink --vcf $VCF --recode  --out $Outputdir/plink
+    plink --vcf $vcf --make-bed  --out $Outputdir/plink
+    plink --bfile $Outputdir/plink --recode  --out $Outputdir/plink
     cat $Outputdir/plink.ped | awk 'BEGIN{OFS="\t"}{het=0;hom=0;missing=0;all=0;for(i=1;i<=((NF-6)/2);i++){if($(i*2+5)!=$(2*i+6)){het++;all++}else if($(i*2+5)==0){missing++;all++}else{hom++;all++}};if(all!=missing){print $1,het/(all-missing)}else{print $1,0};het=0;hom=0;missing=0;all=0}' | sort -k 1 >$Outputdir/XH.txt
         #Collect feature of X mapping rate
     if [ ! -d "$Outputdir/Reads_stat" ]; then
@@ -109,15 +111,15 @@ elif [ $chr = "b" ]; then
     cat $bam | awk '{print $1"\n"$2}' | parallel -j 10 --max-args 2 samtools view -bh -q 30 {2} \| samtools flagstat - \>$Outputdir/Reads_stat\/{1}.total.stat
     cat $bam | awk '{print $1"\n"$2}' | parallel -j 10 --max-args 2 samtools view -bh -q 30 {2} X \| samtools flagstat - \>$Outputdir/Reads_stat\/{1}.X.stat
     cat $bam | awk '{print $1"\n"$2}' | parallel -j 10 --max-args 2 samtools view -bh -q 30 {2} Y \| samtools flagstat - \>$Outputdir/Reads_stat\/{1}.Y.stat
-    ls $Outputdir/Reads_stat/*.X.stat | awk '{split($1,a,".");split(a[1],b,"/");print b[length(b)]}' | while read id; do paste -d' ' $Outputdir/Reads_stat/$id.X.stat $Outputdir/Reads_stat/$id.total.stat | sed -n '5p' | cut -d ' ' -f1,8,15| sed 's/^/'$id' /'; done | awk 'BEGIN{OFS="\t"}{print $1,$2/$3}' | sort -k 1 >$Outputdir/Xmap.txt
-    ls $Outputdir/Reads_stat/*.Y.stat | awk '{split($1,a,".");split(a[1],b,"/");print b[length(b)]}' | while read id; do paste -d' ' $Outputdir/Reads_stat/$id.Y.stat $Outputdir/Reads_stat/$id.total.stat | sed -n '5p' | cut -d ' ' -f1,8,15| sed 's/^/'$id' /'; done | awk 'BEGIN{OFS="\t"}{print $1,$2/$3}' | sort -k 1 >$Outputdir/Ymap.txt
+    cat $bam | awk '{print $1}' | while read id; do paste -d' ' $Outputdir/Reads_stat/$id.X.stat $Outputdir/Reads_stat/$id.total.stat | sed -n '5p' | cut -d ' ' -f1,8,15| sed 's/^/'$id' /'; done | awk 'BEGIN{OFS="\t"}{print $1,$2/$3}' | sort -k 1 >$Outputdir/Xmap.txt
+    cat $bam | awk '{print $1}' | while read id; do paste -d' ' $Outputdir/Reads_stat/$id.Y.stat $Outputdir/Reads_stat/$id.total.stat | sed -n '5p' | cut -d ' ' -f1,8,15| sed 's/^/'$id' /'; done | awk 'BEGIN{OFS="\t"}{print $1,$2/$3}' | sort -k 1 >$Outputdir/Ymap.txt
     paste $Outputdir/XH.txt $Outputdir/Xmap.txt $Outputdir/Ymap.txt | cut -f1,2,4,6 | awk 'BEGIN{OFS="\t";print "sampleid","XH","Xmap",Ymap","XYratio"}{print $1,$2,$3,$2/$3,$4}' >$Outputdir/feature.txt
     if [ $use_SRY != "y" ]; then
         if [ ! -d "$Outputdir/SRY" ]; then
             mkdir $Outputdir/SRY
         fi
         cat $bam | awk 'NR>=2{print $1,$4}' | while read id dir; do mosdepth -t 4 -Q 30 -b $script_dir/SRY_hg"$version".bed -n $Outputdir/SRY/$id $dir; done
-        ls $Outputdir/SRY/*.mosdepth.summary.txt | awk '{split($1,a,".");split(a[1],b,"/");print b[length(b)]}' | while read id; do cat $Outputdir/SRY/$id.mosdepth.summary.txt | tail -n 1 | awk 'BEGIN{OFS="\t"}{print "'$i'",$4}'; done | sort -k 1 >$Outputdir/SRY.txt
+        cat $bam | awk '{print $1}' | while read id; do cat $Outputdir/SRY/$id.mosdepth.summary.txt | tail -n 1 | awk 'BEGIN{OFS="\t"}{print "'$i'",$4}'; done | sort -k 1 >$Outputdir/SRY.txt
         paste $Outputdir/XH.txt $Outputdir/Xmap.txt $Outputdir/Ymap.txt $Outputdir/SRY.txt | cut -f1,2,4,6,8 | awk 'BEGIN{OFS="\t";print "sampleid","XH","Xmap",Ymap","XYratio","SRY"}{print $1,$2,$3,$2/$3,$4,$5}' >$Outputdir/feature.txt
     fi
 else
