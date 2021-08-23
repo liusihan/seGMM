@@ -17,4 +17,4 @@ pdf(paste(Output,"/GMM.predict.pdf",sep=""),height=5,width=5)
 plot(em, what = "classification")
 dev.off()
 feature$Predict<-em$classification
-write.table(feature, paste(Output,"/seGMM_result.txt",sep=""), sep="\t", row.name=FALSE, col.names=TRUE, quote=FALSE)
+write.table(feature, paste(Output,"/seGMM_result.txt",sep=""), sep="\t", row.name=TRUE, col.names=TRUE, quote=FALSE)
