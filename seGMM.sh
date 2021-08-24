@@ -74,8 +74,8 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 if [ $chr = "x" ]; then
     #Collect feature 1: X het rate
     plink --vcf $vcf --make-bed  --out $Outputdir/plink
-    plink --bfile $Outputdir/plink --recode  --out $Outputdir/plink
-    cat $Outputdir/plink.ped | awk 'BEGIN{OFS="\t"}{het=0;hom=0;missing=0;all=0;for(i=1;i<=((NF-6)/2);i++){if($(i*2+5)!=$(2*i+6)){het++;all++}else if($(i*2+5)==0){missing++;all++}else{hom++;all++}};if(all!=missing){print $1,het/(all-missing)}else{print $1,0};het=0;hom=0;missing=0;all=0}' | sort -k 1 >$Outputdir/XH.txt
+    plink --bfile $Outputdir/plink --chr X --recode  --out $Outputdir/plink.X
+    cat $Outputdir/plink.X.ped | awk 'BEGIN{OFS="\t"}{het=0;hom=0;missing=0;all=0;for(i=1;i<=((NF-6)/2);i++){if($(i*2+5)!=$(2*i+6)){het++;all++}else if($(i*2+5)==0){missing++;all++}else{hom++;all++}};if(all!=missing){print $1,het/(all-missing)}else{print $1,0};het=0;hom=0;missing=0;all=0}' | sort -k 1 >$Outputdir/XH.txt
         #Collect feature of X mapping rate
     if [ ! -d "$Outputdir/Reads_stat" ]; then
         mkdir $Outputdir/Reads_stat
@@ -102,8 +102,8 @@ elif [ $chr = "y" ]; then
     fi
 elif [ $chr = "b" ]; then
     plink --vcf $vcf --make-bed  --out $Outputdir/plink
-    plink --bfile $Outputdir/plink --recode  --out $Outputdir/plink
-    cat $Outputdir/plink.ped | awk 'BEGIN{OFS="\t"}{het=0;hom=0;missing=0;all=0;for(i=1;i<=((NF-6)/2);i++){if($(i*2+5)!=$(2*i+6)){het++;all++}else if($(i*2+5)==0){missing++;all++}else{hom++;all++}};if(all!=missing){print $1,het/(all-missing)}else{print $1,0};het=0;hom=0;missing=0;all=0}' | sort -k 1 >$Outputdir/XH.txt
+    plink --bfile $Outputdir/plink --chr X --recode  --out $Outputdir/plink.X
+    cat $Outputdir/plink.X.ped | awk 'BEGIN{OFS="\t"}{het=0;hom=0;missing=0;all=0;for(i=1;i<=((NF-6)/2);i++){if($(i*2+5)!=$(2*i+6)){het++;all++}else if($(i*2+5)==0){missing++;all++}else{hom++;all++}};if(all!=missing){print $1,het/(all-missing)}else{print $1,0};het=0;hom=0;missing=0;all=0}' | sort -k 1 >$Outputdir/XH.txt
         #Collect feature of X mapping rate
     if [ ! -d "$Outputdir/Reads_stat" ]; then
         mkdir $Outputdir/Reads_stat
