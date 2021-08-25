@@ -19,7 +19,25 @@ In order to download `seGMM`, you should clone this repository via the commands
 git clone https://github.com/liusihan/seGMM
 cd seGMM
 ```
-In order to install the software and R packages dependencies, you will need the `Anaconda` Python distribution and package manager. After installing Anaconda, run the following commands to create an environment with seGMM's dependencies:
+In order to install the software and R packages dependencies, first you will need the `Conda` Python distribution and package manager. 
+
+```
+# Download conda installer
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+
+# Set permissions to execute
+chmod +x Miniconda3-latest-Linux-x86_64.sh 	
+
+# Execute. Make sure to "yes" to add the conda to your PATH
+sh ./Miniconda3-latest-Linux-x86_64.sh 		
+
+# Add channels
+conda config --add channels defaults
+conda config --add channels conda-forge
+conda config --add channels bioconda
+```
+
+After installing Miniconda, run the following commands to create an environment with seGMM's dependencies:
 
 ```
 conda env create -f environment.yaml
