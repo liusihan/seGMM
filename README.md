@@ -9,9 +9,6 @@ Computational tools have been developed to infer sex for genotype array, WES and
 
 ![](https://github.com/liusihan/seGMM/blob/main/Workflow.GIF)  
 
-### If you use seGMM, please cite our preprint (thanks!):
->Sihan Liu (2021) seGMM: a new tool to infer sex from massively parallel sequencing data. bioRxiv
-
 ## Installation
 In order to download `seGMM`, you should clone this repository via the commands
 
