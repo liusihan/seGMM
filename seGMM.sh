@@ -128,4 +128,4 @@ else
     exit
 fi
 
-Rscript $script_dir/seGMM.r $Outputdir/feature.txt $Outputdir/
+Rscript $script_dir/script/seGMM.r $Outputdir/feature.txt $Outputdir/
