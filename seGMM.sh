@@ -96,7 +96,7 @@ elif [ $chr = "y" ]; then
         if [ ! -d "$Outputdir/SRY" ]; then
             mkdir $Outputdir/SRY
         fi
-        cat $bam | awk 'NR>=2{print $1,$4}' | while read id dir; do mosdepth -t 4 -Q 30 -b $script_dir/SRY_hg"$version".bed -n $Outputdir/SRY/$id $dir; done
+        cat $bam | awk 'NR>=2{print $1,$4}' | while read id dir; do mosdepth -t 4 -Q 30 -b $script_dir/data/SRY_hg"$version".bed -n $Outputdir/SRY/$id $dir; done
         cat $bam | awk '{print $1}' | while read id; do cat $Outputdir/SRY/$id.mosdepth.summary.txt | tail -n 1 | awk 'BEGIN{OFS="\t"}{print "'$i'",$4}'; done | sort -k 1 >$Outputdir/SRY.txt
         paste $Outputdir/Ymap.txt $Outputdir/SRY.txt | cut -f1,2,4 | awk 'BEGIN{OFS="\t";print "sampleid","Ymap","SRY"}{print $0}' >$Outputdir/feature.txt
     fi
@@ -118,7 +118,7 @@ elif [ $chr = "b" ]; then
         if [ ! -d "$Outputdir/SRY" ]; then
             mkdir $Outputdir/SRY
         fi
-        cat $bam | awk 'NR>=2{print $1,$4}' | while read id dir; do mosdepth -t 4 -Q 30 -b $script_dir/SRY_hg"$version".bed -n $Outputdir/SRY/$id $dir; done
+        cat $bam | awk 'NR>=2{print $1,$4}' | while read id dir; do mosdepth -t 4 -Q 30 -b $script_dir/data/SRY_hg"$version".bed -n $Outputdir/SRY/$id $dir; done
         cat $bam | awk '{print $1}' | while read id; do cat $Outputdir/SRY/$id.mosdepth.summary.txt | tail -n 1 | awk 'BEGIN{OFS="\t"}{print "'$i'",$4}'; done | sort -k 1 >$Outputdir/SRY.txt
         paste $Outputdir/XH.txt $Outputdir/Xmap.txt $Outputdir/Ymap.txt $Outputdir/SRY.txt | cut -f1,2,4,6,8 | awk 'BEGIN{OFS="\t";print "sampleid","XH","Xmap",Ymap","XYratio","SRY"}{print $1,$2,$3,$2/$3,$4,$5}' >$Outputdir/feature.txt
     fi
