@@ -123,7 +123,7 @@ elif [ [$chr = "b"] ]; then
         paste $Outputdir/XH.txt $Outputdir/Xmap.txt $Outputdir/Ymap.txt $Outputdir/SRY.txt | cut -f1,2,4,6,8 | awk 'BEGIN{OFS="\t";print "sampleid","XH","Xmap",Ymap","XYratio","SRY"}{print $1,$2,$3,$2/$3,$4,$5}' >$Outputdir/feature.txt
     fi
 else
-    echo "Please select the sex chromosome you want to use! Optional value is x, y and b(both)."
+    echo "Error, please use the following command for running seGMM!"
     usage
     exit
 fi
