@@ -23,6 +23,7 @@ do
                 if [ ! -f $vcf ]
                 then
                     echo "Error: the input vcf file $vcf doesn't exist!"
+                    usage
                     exit
                 fi
                 ;;
@@ -31,6 +32,7 @@ do
                 if [ ! -f $bam ]
                 then
                     echo "Error: the bamlist file $bam doesn't exist!"
+                    usage
                     exit
                 fi
                 ;;
