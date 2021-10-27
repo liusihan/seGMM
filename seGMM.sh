@@ -115,7 +115,7 @@ elif [ [$chr = "b"] ]; then
     cat $bam | awk '{print $1"\n"$2}' | parallel -j 10 --max-args 2 samtools view -bh -q 30 {2} Y \| samtools flagstat - \>$Outputdir/Reads_stat\/{1}.Y.stat
     cat $bam | awk '{print $1}' | while read id; do paste -d' ' $Outputdir/Reads_stat/$id.X.stat $Outputdir/Reads_stat/$id.total.stat | sed -n '5p' | cut -d ' ' -f1,8,15| sed 's/^/'$id' /'; done | awk 'BEGIN{OFS="\t"}{print $1,$2/$3}' | sort -k 1 >$Outputdir/Xmap.txt
     cat $bam | awk '{print $1}' | while read id; do paste -d' ' $Outputdir/Reads_stat/$id.Y.stat $Outputdir/Reads_stat/$id.total.stat | sed -n '5p' | cut -d ' ' -f1,8,15| sed 's/^/'$id' /'; done | awk 'BEGIN{OFS="\t"}{print $1,$2/$3}' | sort -k 1 >$Outputdir/Ymap.txt
-    paste $Outputdir/XH.txt $Outputdir/Xmap.txt $Outputdir/Ymap.txt | cut -f1,2,4,6 | awk 'BEGIN{OFS="\t";print "sampleid","XH","Xmap",Ymap","XYratio"}{print $1,$2,$3,$2/$3,$4}' >$Outputdir/feature.txt
+    paste $Outputdir/XH.txt $Outputdir/Xmap.txt $Outputdir/Ymap.txt | cut -f1,2,4,6 | awk 'BEGIN{OFS="\t";print "sampleid","XH","Xmap","Ymap","XYratio"}{print $1,$2,$3,$2/$3,$4}' >$Outputdir/feature.txt
     if [ [$use_SRY != "y"] ]; then
         if [ ! -d "$Outputdir/SRY" ]; then
             mkdir $Outputdir/SRY
