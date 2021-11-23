@@ -17,23 +17,18 @@ From PyPI:
 pip install seGMM
 ```
 
-Dependencies:
-
-* Programming languages:
-
-  * `python <https://www.python.org/>`_ >= 3
-
-  * `R <https://www.r-project.org/>`_ >= 3.5
+Dependencies
+- Programming languages:
+  * [Python](https://www.python.org/) >3
+  * [R](https://www.r-project.org/) >= 3.5
  
-* Commandline tools:
-- Python >= 3
-- Plink >= 1.9
-- parallel
-- samtools >= 1.9
-- mosdepth
-- R >= 3.5
-- mclust
-  
+- Commandline tools and packages:
+  * [Plink](https://www.cog-genomics.org/plink/) >=1.9
+  * [samtools](https://github.com/samtools/samtools) >=1.9
+  * [mosdepth](https://github.com/brentp/mosdepth)
+  * [parallel](https://www.gnu.org/software/parallel/)
+  * [mclust](https://cran.r-project.org/web/packages/mclust/index.html)
+
 ### Robust install
 In order to install the software and dependencies, we recommend using a dedicated conda environment and `seGMM` is available on bioconda. (installation time: ~ 10min)
 First you will need the `Conda` Python distribution and package manager. 
