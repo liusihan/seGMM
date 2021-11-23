@@ -101,7 +101,7 @@ seGMM -i input.vcf -b bam.file -r reference.txt -o outputdir -x -m -y
 ```
 
 ## Citation
-If you use the software or the LD Score regression intercept, please cite
+If you use the software, please cite
 
 ## License
 This project is licensed under GNU GPL v3.
