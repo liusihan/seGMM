@@ -61,14 +61,10 @@ seGMM -h
 ```
 to print a list of all command-line options. If these commands fail with an error, then something as gone wrong during the installation process.
 
-Now we describe the different parameters needed in DROP.
+Now we describe the different parameters needed in seGMM.
 
-Parameters
-++++++++++++++++++++++++++++
-
-============================  =========  ============================================================================================  ======
-| Parameter                   | Type     | Description                                                                                 | Required|
-============================  =========  ============================================================================================  ======
+##Parameters
+|Parameter|Type| Description|Required|
 |---|---|---|---|
 |--input/-i|character|Path of the input vcf files.|``true``|
 |--bam/-b|character|Path of file contain the **sampleID and Full path of correspanding bam file. No header.**|``true``|
