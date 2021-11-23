@@ -17,7 +17,13 @@ From PyPI:
 pip install seGMM
 ```
 
-Dependencies:
+* Programming languages:
+
+  * `python <https://www.python.org/>`_ >= 3
+
+  * `R <https://www.r-project.org/>`_ >= 3.5
+ 
+* Commandline tools:
 - Python >= 3
 - Plink >= 1.9
 - parallel
