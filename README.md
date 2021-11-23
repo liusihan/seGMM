@@ -12,7 +12,7 @@ Importantly, in clinical practice, individual patient or trio samples are usuall
 ![](https://github.com/liusihan/seGMM/blob/main/Workflow.GIF)  
 
 ## Installation
-# Robust install
+### Robust install
 From PyPI:
 
 ```
@@ -20,15 +20,15 @@ pip install seGMM
 ```
 
 Dependencies:
-  Python >= 3
-  Plink >= 1.9
-  parallel
-  samtools >= 1.9
-  mosdepth
-  R >= 3.5
-  r-mclust
+- Python >= 3
+- Plink >= 1.9
+- parallel
+- samtools >= 1.9
+- mosdepth
+- R >= 3.5
+- mclust
   
-# Quick install
+### Quick install
 In order to install the software and dependencies, we recommend using a dedicated conda environment and `seGMM` is available on bioconda. (installation time: ~ 10min)
 First you will need the `Conda` Python distribution and package manager. 
 
