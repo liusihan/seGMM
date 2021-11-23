@@ -71,16 +71,16 @@ Now we describe the different parameters needed in seGMM.
 |--bam/-b|character|Path of file contain the **sampleID and Full path of correspanding bam file. No header.**|``true``|
 |--chromosome/-c|character|Sex chromosome to use collect features. **Optional is {xy,x,y}**|``false``|
 |--type/-t|character|Study type. Note that if your **don't provide an additional reference data, you must use --type.** If the data type is WGS or WES, seGMM will automatic calculated all 5 features, otherwise if your **data type is TGS you have to choice which sex chromosome you want to use (--chromosome/-c) and tell seGMM the SRY gene is included or not (--SRY/-s)**|``false``|
-|--output/-o                   character  Genome version. Default is hg19.                                                              ``false #{hg19,hg38}``
-|--genome/-g                   character  Set to true if non standard chromosomes are to be kept for further analysis.                  ``true``                        
-|--SRY/-s                      boolean    If false, seGMM will not calculate the mean depth of SRY gene.                                ``false``
-|--reference/-r                character  The additional reference file contain features. We have provided two additinal files(1000G_WES and 1000G_WGS).      ``false``
-|--uncertain_threshold/-u      numeric    The threshold for detecting outliers in GMM model. Default is 0.1. The range of threshold is 0-1.   ``false``
-|--num_threshold/-n            numeric    Number of additional threads to use. Default is 1.                                           ``false``
-|--Qulity/-q                   numeric    Mapping quality threshold of reads to count. Default is 30.                                  ``false``
-|--XH/-x                       character  With a provided external reference data, using this parameter with no value, seGMM will calculated XH.                    ``false``
-|--Xmap/-m                     character  With a provided external reference data, using this parameter with no value, seGMM will calculated Xmap.                                                              ``false``
-|--Ymap/-y                     character  With a provided external reference data, using this parameter with no value, seGMM will calculated Ymap.                  ''false''
+|--output/-o|character|Prefix of output directory.|``true``|
+|--genome/-g|character|Genome version. **Default is hg19. Option is {hg19,hg38}**.|``false``|                        
+|--SRY/-s|boolean|If **True**, seGMM will calculate the mean depth of SRY gene.|``false``|
+|--reference/-r|character|The path of additional reference file contain features. We have provided two additinal files (1000G_WES and 1000G_WGS).|``false``|
+|--uncertain_threshold/-u|numeric|The threshold for detecting outliers in GMM model. **Default is 0.1. The range of threshold is 0-1.**|``false``|
+|--num_threshold/-n|numeric|Number of additional threads to use. Default is 1.|``false``|
+|--Qulity/-q|numeric|Mapping quality threshold of reads to count. Default is 30.|``false``|
+|--XH/-x|character|With a **provided external reference data**, using this parameter with no value, seGMM will calculated XH.|``false``|
+|--Xmap/-m|character|With a **provided external reference data**, using this parameter with no value, seGMM will calculated Xmap.|``false``|
+|--Ymap/-y|character|With a **provided external reference data**, using this parameter with no value, seGMM will calculated Ymap.|''false''|
 
 ## Citation
 If you use the software or the LD Score regression intercept, please cite
