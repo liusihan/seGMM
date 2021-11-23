@@ -59,7 +59,7 @@ Once the above has completed, you can run:
 ```
 seGMM -h
 ```
-to print a list of all command-line options. 
+to print a list of all command-line options. If these commands fail with an error, then something as gone wrong during the installation process.
 
 ## Usage
 ```
@@ -72,5 +72,13 @@ sh seGMM.sh -i vcf.gz -b bam.list -c x(y/b) -s n(y) -o output
 - `-o`: Prefix of output file. (If not exist, seGMM will create it!)
 - `-v`: Genome version(default: hg19. If your vcf data is mapping to hg38, please use this parameter with no value!). 
 
+## Citation
+If you use the software or the LD Score regression intercept, please cite
+
 ## License
-MIT ©
+This project is licensed under GNU GPL v3.
+
+## Authors
+Sihan Liu (West china hospital)
+
+
