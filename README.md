@@ -17,6 +17,8 @@ From PyPI:
 pip install seGMM
 ```
 
+Dependencies:
+
 * Programming languages:
 
   * `python <https://www.python.org/>`_ >= 3
