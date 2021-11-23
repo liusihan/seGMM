@@ -13,7 +13,7 @@ Importantly, in clinical practice, individual patient or trio samples are usuall
 ### Quick install
 From PyPI:
 
-```
+```shell
 pip install seGMM
 ```
 
@@ -33,7 +33,7 @@ Dependencies
 In order to install the software and dependencies, we recommend using a dedicated conda environment and `seGMM` is available on bioconda. (installation time: ~ 10min)
 First you will need the `Conda` Python distribution and package manager. 
 
-```
+```shell
 # Download conda installer
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 
@@ -70,18 +70,35 @@ Now we describe the different parameters needed in seGMM.
 |---|---|---|---|
 |--input/-i|character|Path of the input vcf files.|``true``|
 |--bam/-b|character|Path of file contain the **sampleID and Full path of correspanding bam file. No header.**|``true``|
-|--chromosome/-c|character|Sex chromosome to use collect features. **Optional is {xy,x,y}**|``false``|
+|--chromosome/-c|character|Sex chromosome to use collect features. **Optional is {xy,x,y}. If --reference is used, you can no longer use this parameter**|``false``|
 |--type/-t|character|Study type. Note that if your **don't provide an additional reference data, you must use --type.** If the data type is WGS or WES, seGMM will automatic calculated all 5 features, otherwise if your **data type is TGS you have to choice which sex chromosome you want to use (--chromosome/-c) and tell seGMM the SRY gene is included or not (--SRY/-s)**|``false``|
 |--output/-o|character|Prefix of output directory.|``true``|
 |--genome/-g|character|Genome version. **Default is hg19. Option is {hg19,hg38}**.|``false``|                        
 |--SRY/-s|boolean|If **True**, seGMM will calculate the mean depth of SRY gene.|``false``|
-|--reference/-r|character|The path of additional reference file contain features. We have provided two additinal files (1000G_WES and 1000G_WGS).|``false``|
+|--reference/-r|character|The path of additional reference file contain features. We have provided two additinal files (1000G_WES and 1000G_WGS). If **--reference is used, --XH/--Xmap/--Ymap must choose to use. The file (tab split) must contain at least two features, and the column names must be: sampleid,XH,Xmap,Ymap,XYratio,SRY. The ordering of the columns is arbitrary, except for the first instance, which must be the sample name** |``false``|
 |--uncertain_threshold/-u|numeric|The threshold for detecting outliers in GMM model. **Default is 0.1. The range of threshold is 0-1.**|``false``|
 |--num_threshold/-n|numeric|Number of additional threads to use. Default is 1.|``false``|
 |--Qulity/-q|numeric|Mapping quality threshold of reads to count. Default is 30.|``false``|
 |--XH/-x|character|With a **provided external reference data**, using this parameter with no value, seGMM will calculated XH.|``false``|
 |--Xmap/-m|character|With a **provided external reference data**, using this parameter with no value, seGMM will calculated Xmap.|``false``|
 |--Ymap/-y|character|With a **provided external reference data**, using this parameter with no value, seGMM will calculated Ymap.|``false``|
+
+## Usage examples
+```shell
+## For WES and WGS data. Using 20 cores
+seGMM -i input.vcf -b bam.file -t WES -o outputdir -n 20
+
+## For TGS data
+# The gene panel contains only genes located on the X chromosome
+seGMM -i input.vcf -b bam.file -t TGS -o outputdir -c x -s False
+
+# The gene panel contains genes located on the X and Y chromosome, but don't contain SRY
+seGMM -i input.vcf -b bam.file -t TGS -o outputdir -c xy -s False
+
+## With an additional reference file
+seGMM -i input.vcf -b bam.file -r reference.txt -o outputdir -x -m -y
+
+```
 
 ## Citation
 If you use the software or the LD Score regression intercept, please cite
