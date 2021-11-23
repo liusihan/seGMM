@@ -64,6 +64,7 @@ to print a list of all command-line options. If these commands fail with an erro
 Now we describe the different parameters needed in seGMM.
 
 ##Parameters
+
 |Parameter|Type| Description|Required|
 |---|---|---|---|
 |--input/-i|character|Path of the input vcf files.|``true``|
