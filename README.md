@@ -2,21 +2,35 @@
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
 ## Background
-Computational tools have been developed to infer sex for genotype array, WES and WGS data such as plink, seXY and SEXCMD. Plink calculated F coefficient with X chromosome heterozygosity to infer sex for genotype array data. seXY considered both X chromosome heterozygosity and Y chromosome missingness to infer sex in genotype array data by logistic regression. SEXCMD can extract read count which mapped to sex-specific marker sequences from syntenic regions and calculated ratio of X and Y counts to infer sex in WES and WGS data. However, evaluation the accuracy of these methods in panel data is not yet fully and improvements in sex inference from gene panel data are warranted.
+Computational tools have been developed to infer sex for genotype array, WES and WGS data such as plink, seXY and XYalign. Plink calculated F coefficient with X chromosome heterozygosity to infer sex for genotype array data. seXY considered both X chromosome heterozygosity and Y chromosome missingness to infer sex in genotype array data by logistic regression. XYalign extract read count mapped to sex chromosomes and calculated the ratio of X and Y counts to infer sex in WES and WGS data. However, evaluation the accuracy of these methods in targeted gene panel data is not yet fully and improvements in sex inference from gene panel data are warranted.
 
 ## Description
 `seGMM` is a tool that determines the gender of a sample from the called genotype data integrated BAM files and jointly considers information on the X and Y chromosomes in diverse genotype data including `panel data`. seGMM apply `Gaussian Mixture Model (GMM)` clustering to classify the samples into two clusters.<br>
 
+Importantly, in clinical practice, individual patient or trio samples are usually sequenced to get a molecular diagnosis. Hence, seGMM permits users to provide an additional reference data, by combining the features from reference data, seGMM can ensure the accuracy for clinical application. Besides, seGMM can throw the exceptions with an uncertain classification, indicating potential events of sex chromosome abnormity.
+
 ![](https://github.com/liusihan/seGMM/blob/main/Workflow.GIF)  
 
 ## Installation
-In order to download `seGMM`, you should clone this repository via the commands
+# Robust install
+From PyPI:
 
 ```
-git clone https://github.com/liusihan/seGMM
-cd seGMM
+pip install seGMM
 ```
-In order to install the software and R packages dependencies, first you will need the `Conda` Python distribution and package manager. 
+
+Dependencies:
+  Python >= 3
+  Plink >= 1.9
+  parallel
+  samtools >= 1.9
+  mosdepth
+  R >= 3.5
+  r-mclust
+  
+# Quick install
+In order to install the software and dependencies, we recommend using a dedicated conda environment and `seGMM` is available on bioconda. (installation time: ~ 10min)
+First you will need the `Conda` Python distribution and package manager. 
 
 ```
 # Download conda installer
@@ -37,13 +51,13 @@ conda config --add channels bioconda
 After installing Miniconda, run the following commands to create an environment with seGMM's dependencies:
 
 ```
-conda env create -f environment.yaml
+conda install -c bioconda seGMM
 source activate seGMM
 ```
 
 Once the above has completed, you can run:
 ```
-sh seGMM.sh -h
+seGMM -h
 ```
 to print a list of all command-line options. 
 
