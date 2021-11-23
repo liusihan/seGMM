@@ -63,7 +63,7 @@ to print a list of all command-line options. If these commands fail with an erro
 
 Now we describe the different parameters needed in seGMM.
 
-##Parameters
+## Parameters
 
 |Parameter|Type| Description|Required|
 |---|---|---|---|
@@ -81,7 +81,6 @@ Now we describe the different parameters needed in seGMM.
 |--XH/-x                       character  With a provided external reference data, using this parameter with no value, seGMM will calculated XH.                    ``false``
 |--Xmap/-m                     character  With a provided external reference data, using this parameter with no value, seGMM will calculated Xmap.                                                              ``false``
 |--Ymap/-y                     character  With a provided external reference data, using this parameter with no value, seGMM will calculated Ymap.                  ''false''
-============================  =========  ============================================================================================  ======
 
 ## Citation
 If you use the software or the LD Score regression intercept, please cite
