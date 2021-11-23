@@ -9,8 +9,6 @@ Computational tools have been developed to infer sex for genotype array, WES and
 
 Importantly, in clinical practice, individual patient or trio samples are usually sequenced to get a molecular diagnosis. Hence, seGMM permits users to provide an additional reference data, by combining the features from reference data, seGMM can ensure the accuracy for clinical application. Besides, seGMM can throw the exceptions with an uncertain classification, indicating potential events of sex chromosome abnormity.
 
-![](https://github.com/liusihan/seGMM/blob/main/Workflow.GIF)  
-
 ## Installation
 ### Quick install
 From PyPI:
@@ -80,7 +78,7 @@ Now we describe the different parameters needed in seGMM.
 |--Qulity/-q|numeric|Mapping quality threshold of reads to count. Default is 30.|``false``|
 |--XH/-x|character|With a **provided external reference data**, using this parameter with no value, seGMM will calculated XH.|``false``|
 |--Xmap/-m|character|With a **provided external reference data**, using this parameter with no value, seGMM will calculated Xmap.|``false``|
-|--Ymap/-y|character|With a **provided external reference data**, using this parameter with no value, seGMM will calculated Ymap.|''false''|
+|--Ymap/-y|character|With a **provided external reference data**, using this parameter with no value, seGMM will calculated Ymap.|``false``|
 
 ## Citation
 If you use the software or the LD Score regression intercept, please cite
