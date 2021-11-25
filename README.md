@@ -97,6 +97,57 @@ seGMM -i input.vcf -b bam.file -r reference.txt -o outputdir
 
 ```
 
+## Test
+You can download test data from exon-targetted sequencing for 1000 genes from the 1000 Genomes Project here. After download the file, you should make a ``bamlist`` file which contain sample ID and the full path of bam files. Then you can run
+```shell
+seGMM -i test.vcf -b bamlist -t TGS -c xy -s False -o seGMM_test
+```
+If everything is going on, you will see:
+```
+seGMM -i test.vcf -b Target.bam.list -t TGS -c xy -s False -o seGMM_test
+*********************************************************************
+* seGMM
+* Version 1.0.1
+* (C) 2021-2026 Sihan Liu
+* Research Institute of Rare disease / West china hospital
+* GNU General Public License v3
+*********************************************************************
+
+Warning, the output file is not exist, seGMM creates the output folder of seGMM_test first!
+Beginning generate features at Thu Nov 25 14:10:23 2021
+>> Collected feature of X chromosome heterozygosity
+    Finish generate features of X chromosome heterozygosity at Thu Nov 25 14:10:24 2021
+
+>> Collected feature of X mapping rate
+    Finish generate features of X mapping rate at Thu Nov 25 14:10:37 2021
+
+>> Collected feature of Y mapping rate
+    Finish generate features of Y mapping rate at Thu Nov 25 14:10:38 2021
+
+>> Combine features into a single file
+
+>> Running sample classfication based on GMM model
+WARNING: ignoring environment value of R_HOME
+null device
+          1
+null device
+          1
+[1] "There are 0 outliers samples based on prediction uncertainty"
+character(0)
+outliers
+FALSE
+   10
+
+Analysis complete for seGMM at Thu Nov 25 14:10:38 2021
+Total time elapsed: 15.59s
+
+*********************************************************************
+* Thanks for using seGMM!
+* Report bugs to liusihan@wchscu.cn
+* seGMM homepage: https://github.com/liusihan/seGMM
+*********************************************************************
+```
+
 ## Citation
 If you use the software, please cite
 
