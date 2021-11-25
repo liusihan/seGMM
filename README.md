@@ -53,7 +53,6 @@ After installing Miniconda, run the following commands to create an environment 
 
 ```
 conda install -c bioconda seGMM
-source activate seGMM
 ```
 
 Once the above has completed, you can run:
@@ -62,7 +61,6 @@ seGMM -h
 ```
 to print a list of all command-line options. If these commands fail with an error, then something as gone wrong during the installation process.
 
-Now we describe the different parameters needed in seGMM.
 
 ## Parameters
 
@@ -75,7 +73,7 @@ Now we describe the different parameters needed in seGMM.
 |--output/-o|character|Prefix of output directory.|``true``|
 |--genome/-g|character|Genome version. **Default is hg19. Option is {hg19,hg38}**.|``false``|                        
 |--SRY/-s|boolean|If **True**, seGMM will calculate the mean depth of SRY gene.|``false``|
-|--reference/-r|character|The path of additional reference file contain features. We have provided two additinal files (1000G_WES and 1000G_WGS). If **--reference is used, --XH/--Xmap/--Ymap must choose to use. The file (tab split) must contain at least two features, and the column names must be: sampleid,XH,Xmap,Ymap,XYratio,SRY. The ordering of the columns is arbitrary, except for the first instance, which must be the sample name** |``false``|
+|--reference/-r|character|The path of additional reference file contain features. We have provided two additinal files (1000G_WES and 1000G_WGS). If **--reference is used, seGMM will automatically calculated the same features in the reference file. The file (tab split) must contain at least two features, and the column names must be: sampleid,XH,Xmap,Ymap,XYratio,SRY. The ordering of the columns is arbitrary, except for the first instance, which must be the sample name** |``false``|
 |--uncertain_threshold/-u|numeric|The threshold for detecting outliers in GMM model. **Default is 0.1. The range of threshold is 0-1.**|``false``|
 |--num_threshold/-n|numeric|Number of additional threads to use. Default is 1.|``false``|
 |--Qulity/-q|numeric|Mapping quality threshold of reads to count. Default is 30.|``false``|
@@ -97,12 +95,12 @@ seGMM -i input.vcf -b bam.file -r reference.txt -o outputdir
 
 ```
 
-## Test
-You can download test data from exon-targetted sequencing for 1000 genes from the 1000 Genomes Project here. After download the file, you should make a ``bamlist`` file which contain sample ID and the full path of bam files. Then you can run
+## Test for seGMM
+You can download test data from exon-targetted sequencing for 1000 genes from the 1000 Genomes Project [here](https://drive.google.com/drive/folders/1J8ig-u0HKLok-umFV76Edo8LQgQn2xkC?usp=sharing). After download the file, you should make a ``bam.list`` file which contain sample ID and the full path of bam files. Then you can run
 ```shell
-seGMM -i test.vcf -b bamlist -t TGS -c xy -s False -o seGMM_test
+seGMM -i test.vcf -b bam.list -t TGS -c xy -s False -o seGMM_test
 ```
-If everything is going on, you will see:
+If everything goes well, you will see:
 ```
 seGMM -i test.vcf -b Target.bam.list -t TGS -c xy -s False -o seGMM_test
 *********************************************************************
