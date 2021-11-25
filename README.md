@@ -96,7 +96,7 @@ seGMM -i input.vcf -b bam.file -r reference.txt -o outputdir
 ```
 
 ## Test for seGMM
-You can download test data from exon-targetted sequencing for 1000 genes from the 1000 Genomes Project [here](https://drive.google.com/drive/folders/1J8ig-u0HKLok-umFV76Edo8LQgQn2xkC?usp=sharing). After download the file, you should make a ``bam.list`` file which contain sample ID and the full path of bam files. Then you can run
+You can download test data from exon-targetted sequencing for 1000 genes from the 1000 Genomes Project [here](https://drive.google.com/uc?export=download&id=16Ff5LWW8ghn7qPIn4CQTi1em5x5vWoPS). After download the file, you should make a ``bam.list`` file which contain sample ID and the full path of bam files. Then you can run
 ```shell
 seGMM -i test.vcf -b bam.list -t TGS -c xy -s False -o seGMM_test
 ```
