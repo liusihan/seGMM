@@ -79,9 +79,6 @@ Now we describe the different parameters needed in seGMM.
 |--uncertain_threshold/-u|numeric|The threshold for detecting outliers in GMM model. **Default is 0.1. The range of threshold is 0-1.**|``false``|
 |--num_threshold/-n|numeric|Number of additional threads to use. Default is 1.|``false``|
 |--Qulity/-q|numeric|Mapping quality threshold of reads to count. Default is 30.|``false``|
-|--XH/-x|character|With a **provided external reference data**, using this parameter with no value, seGMM will calculated XH.|``false``|
-|--Xmap/-m|character|With a **provided external reference data**, using this parameter with no value, seGMM will calculated Xmap.|``false``|
-|--Ymap/-y|character|With a **provided external reference data**, using this parameter with no value, seGMM will calculated Ymap.|``false``|
 
 ## Usage examples
 ```shell
@@ -95,8 +92,8 @@ seGMM -i input.vcf -b bam.file -t TGS -o outputdir -c x -s False
 # The gene panel contains genes located on the X and Y chromosome, but don't contain SRY
 seGMM -i input.vcf -b bam.file -t TGS -o outputdir -c xy -s False
 
-## With an additional reference file
-seGMM -i input.vcf -b bam.file -r reference.txt -o outputdir -x -m -y
+## With an additional reference file. Note the header of referenc file must like: sampleid,XH,Xmap,Ymap,XYraio,SRY. And seGMM will automatically calculated the same features in the reference file.
+seGMM -i input.vcf -b bam.file -r reference.txt -o outputdir
 
 ```
 
