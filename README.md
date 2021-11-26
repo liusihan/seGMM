@@ -49,7 +49,7 @@ conda config --add channels conda-forge
 conda config --add channels bioconda
 ```
 
-After installing Miniconda, run the following commands to create an environment with seGMM's dependencies:
+After installing Miniconda, run the following commands to install seGMM and seGMM's dependencies:
 
 ```
 conda install -c bioconda seGMM
