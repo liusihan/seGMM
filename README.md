@@ -90,7 +90,9 @@ seGMM -i input.vcf -b bam.file -t TGS -o outputdir -c x -s False
 # The gene panel contains genes located on the X and Y chromosome, but don't contain SRY
 seGMM -i input.vcf -b bam.file -t TGS -o outputdir -c xy -s False
 
-## With an additional reference file. Note the header of referenc file must like: sampleid,XH,Xmap,Ymap,XYraio,SRY. And seGMM will automatically calculated the same features in the reference file. We have provided two additinal files (**1000G.WES.txt and 1000G.WGS.txt in reference folder**).
+## With an additional reference file. Note the header of referenc file must like: sampleid,XH,Xmap,Ymap,XYraio,SRY. 
+## And seGMM will automatically calculated the same features in the reference file. 
+## We have provided two additinal files (1000G.WES.txt and 1000G.WGS.txt in reference folder).
 seGMM -i input.vcf -b bam.file -r reference.txt -o outputdir
 
 ```
