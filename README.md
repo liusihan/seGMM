@@ -52,7 +52,7 @@ conda config --add channels bioconda
 After installing Miniconda, run the following commands to install seGMM and seGMM's dependencies:
 
 ```
-conda install -c bioconda seGMM
+conda install -c sihanliu segmm
 ```
 
 Once the above has completed, you can run:
