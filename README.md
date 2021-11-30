@@ -44,15 +44,16 @@ chmod +x Miniconda3-latest-Linux-x86_64.sh
 sh ./Miniconda3-latest-Linux-x86_64.sh 		
 
 # Add channels
-conda config --add channels defaults
-conda config --add channels conda-forge
 conda config --add channels bioconda
+conda config --add channels conda-forge
 ```
 
 After installing Miniconda, run the following commands to install seGMM and seGMM's dependencies:
 
 ```
+conda create -n seGMM
 conda install -c sihanliu segmm
+conda activate seGMM
 ```
 
 Once the above has completed, you can run:
