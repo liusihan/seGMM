@@ -30,7 +30,7 @@ Dependencies
   * [mclust](https://cran.r-project.org/web/packages/mclust/index.html)
 
 ### Robust install
-In order to install the software and dependencies, we recommend using a dedicated conda environment and `seGMM` is available on bioconda. (installation time: ~ 10min)
+In order to install the software and dependencies, we recommend using a dedicated conda environment and `seGMM` is available on conda. (installation time: ~ 10min)
 First you will need the `Conda` Python distribution and package manager. 
 
 ```shell
