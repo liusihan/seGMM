@@ -107,7 +107,7 @@ If everything goes well, you will see:
 seGMM -i test.vcf -b Target.bam.list -t TGS -c xy -s False -o seGMM_test
 *********************************************************************
 * seGMM
-* Version 1.0.1
+* Version 1.2.1
 * (C) 2021-2026 Sihan Liu
 * Research Institute of Rare disease / West china hospital
 * GNU General Public License v3
