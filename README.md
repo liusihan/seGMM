@@ -52,8 +52,8 @@ After installing Miniconda, run the following commands to install seGMM and seGM
 
 ```
 conda create -n seGMM
-conda install -c sihanliu segmm
 conda activate seGMM
+conda install -c sihanliu segmm
 ```
 
 Once the above has completed, you can run:
