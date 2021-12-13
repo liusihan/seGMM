@@ -70,7 +70,7 @@ to print a list of all command-line options. If these commands fail with an erro
 |--input/-i|character|Path of the input vcf files.|``true``|
 |--bam/-b|character|Path of file contain the **sampleID and Full path of correspanding bam file. No header.**|``true``|
 |--chromosome/-c|character|Sex chromosome to use collect features. **Optional is {xy,x,y}. If --reference is used, you can no longer use this parameter**|``false``|
-|--type/-t|character|Sequencing type. Note that if your **don't provide an additional reference data, you must use --type.** If the data type is WGS or WES, seGMM will automatic calculated all 5 features, otherwise if your **sequencing type is TGS you have to choice which sex chromosome you want to use (--chromosome/-c) and tell seGMM the SRY gene is included or not (--SRY/-s)**|``true``|
+|--type/-t|character|Sequencing type. Note that if your **don't provide an additional reference data, you must use --type.** If the data type is WGS or WES, seGMM will automatic calculated all 5 features, otherwise if your **sequencing type is TGS you have to choice which sex chromosome you want to use (--chromosome/-c) and tell seGMM the SRY gene is included or not (--SRY/-s)**|``false``|
 |--output/-o|character|Prefix of output directory.|``true``|
 |--genome/-g|character|Genome version. **Default is hg19. Option is {hg19,hg38}**.|``false``|                        
 |--SRY/-s|boolean|If **True**, seGMM will calculate the mean depth of SRY gene. **Option is {True,False}**. |``false``|
