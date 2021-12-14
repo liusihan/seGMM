@@ -129,10 +129,6 @@ Beginning generate features at Thu Nov 25 14:10:23 2021
 
 >> Running sample classfication based on GMM model
 WARNING: ignoring environment value of R_HOME
-null device
-          1
-null device
-          1
 [1] "There are 0 outliers samples based on prediction uncertainty"
 character(0)
 outliers
