@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='seGMM',
-    version='1.0.1',
+    version='1.2.1',
     description=(
         'seGMM is a tool that determines the gender of a sample from the called genotype data integrated BAM files and jointly considers information on the X and Y chromosomes in diverse genotype data including panel data. seGMM apply Gaussian Mixture Model (GMM) clustering to classify the samples into two clusters.'
     ),
