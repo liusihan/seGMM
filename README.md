@@ -39,8 +39,6 @@ conda install -c sihanliu segmm
 ### Quick install
 If `Conda` has been installed before, and the dependencies of seGMM is already installed in your environment, then you can quickly install seGMM from PyPI:
 
-From PyPI:
-
 ```shell
 pip install seGMM
 ```
