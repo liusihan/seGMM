@@ -10,25 +10,6 @@ Computational tools have been developed to infer sex for genotype array, WES and
 Importantly, in clinical practice, individual patient or trio samples are usually sequenced to get a molecular diagnosis. Hence, seGMM permits users to provide an additional reference data, by combining the features from reference data, seGMM can ensure the accuracy for clinical application. Besides, seGMM can throw the exceptions with an uncertain classification, indicating potential events of sex chromosome abnormity.
 
 ## Installation
-### Quick install
-From PyPI:
-
-```shell
-pip install seGMM
-```
-
-Dependencies
-- Programming languages:
-  * [Python](https://www.python.org/) >3
-  * [R](https://www.r-project.org/) >= 3.5
- 
-- Commandline tools and packages:
-  * [Plink](https://www.cog-genomics.org/plink/) >=1.9
-  * [samtools](https://github.com/samtools/samtools) >=1.9
-  * [mosdepth](https://github.com/brentp/mosdepth)
-  * [parallel](https://www.gnu.org/software/parallel/)
-  * [mclust](https://cran.r-project.org/web/packages/mclust/index.html)
-
 ### Robust install
 In order to install the software and dependencies, we recommend using a dedicated conda environment and `seGMM` is available on conda. (installation time: ~ 15min)
 First you will need the `Conda` Python distribution and package manager. 
@@ -55,8 +36,28 @@ conda create -n seGMM
 conda activate seGMM
 conda install -c sihanliu segmm
 ```
+### Quick install
+If `Conda` has been installed before, and the dependencies of seGMM is already installed in your environment, then you can quickly install seGMM from PyPI:
 
-Once the above has completed, you can run:
+From PyPI:
+
+```shell
+pip install seGMM
+```
+
+Dependencies
+- Programming languages:
+  * [Python](https://www.python.org/) >3
+  * [R](https://www.r-project.org/) >= 3.5
+ 
+- Commandline tools and packages:
+  * [Plink](https://www.cog-genomics.org/plink/) >=1.9
+  * [samtools](https://github.com/samtools/samtools) >=1.9
+  * [mosdepth](https://github.com/brentp/mosdepth)
+  * [parallel](https://www.gnu.org/software/parallel/)
+  * [mclust](https://cran.r-project.org/web/packages/mclust/index.html)
+
+Once the installation of seGMM has completed, you can run:
 ```
 seGMM -h
 ```
