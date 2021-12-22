@@ -145,7 +145,10 @@ Total time elapsed: 15.59s
 ```
 
 ## Citation
-If you use the software, please cite
+If you use seGMM, please cite our preprint (thanks!):
+> seGMM: a new tool to infer sex from massively parallel sequencing data
+Sihan Liu, Yuanyuan Zeng, Meilin Chen, Qian Zhang, Lanchen Wang, Chao Wang, Yu Lu, Hui Guo, Fengxiao Bu
+bioRxiv 2021.12.16.472877; doi: https://doi.org/10.1101/2021.12.16.472877
 
 ## License
 This project is licensed under GNU GPL v3.
