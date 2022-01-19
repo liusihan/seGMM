@@ -11,7 +11,7 @@ Importantly, in clinical practice, individual patient is usually sequenced to ge
 
 ## Installation
 ### Robust install
-In order to install the software and dependencies, we recommend using a dedicated conda environment and `seGMM` is available on conda. (installation time: ~ 15min)
+In order to install the software and dependencies, we recommend using a dedicated conda environment and `seGMM` is available on conda (installation time: ~ 15min).
 First you will need the `Conda` Python distribution and package manager. 
 
 ```shell
