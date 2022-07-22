@@ -104,7 +104,7 @@ seGMM -i test.vcf -b bam.list -t TGS -c xy -s False -o seGMM_test
 ```
 If everything goes well, you will see:
 ```
-seGMM -i test.vcf -b Target.bam.list -t TGS -c xy -s False -o seGMM_test
+seGMM -i test.vcf -b bam.list -t TGS -c xy -s False -o seGMM_test
 *********************************************************************
 * seGMM
 * Version 1.2.1
