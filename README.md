@@ -67,7 +67,7 @@ to print a list of all command-line options. If these commands fail with an erro
 |Parameter|Type| Description|Required|
 |---|---|---|---|
 |--input/-i|character|The input vcf file which contains all the samples you want to infer gender. |``true``|
-|--bam/-b|character|A text file which contain two columns with no header and split by space. The first column is the sample ID which match the sample ID in the input vcf file. The order of the sample ID in bam.file and the order of the sample ID in the VCF file can be inconsistent. the **An example file has been provided in the test fold.**|``true``|
+|--bam/-b|character|"Bam.file". A text file which contain two columns with no header and split by space. The first column is the sample ID which match the sample ID in the input vcf file. The order of the sample ID in bam.file and the order of the sample ID in the VCF file can be inconsistent. **An example file has been provided in the test fold.**|``true``|
 |--chromosome/-c|character|Sex chromosome to use collect features. **Optional is {xy,x,y}. If --reference is used, you can no longer use this parameter**|``false``|
 |--type/-t|character|Sequencing type. Note that if your **don't provide an additional reference data, you must use --type.** If the data type is WGS or WES, seGMM will automatic calculated all 5 features, otherwise if your **sequencing type is TGS you have to choice which sex chromosome you want to use (--chromosome/-c) and tell seGMM the SRY gene is included or not (--SRY/-s)**|``false``|
 |--output/-o|character|Prefix of output directory.|``true``|
