@@ -82,7 +82,7 @@ def collect_Xmap(bamfile,quality,num_threshold,outdir):
     print(">> Collected feature of X mapping rate")
     if not os.path.exists(outdir+"/"+"Read_stat"):
         os.makedirs(outdir+"/"+"Read_stat")
-    cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " {2} X \| samtools flagstat -@ 10 - \>" +outdir+"\/"+"Read_stat"+ "\/{1}.X.stat"
+    cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " {2} X chrX \| samtools flagstat -@ 10 - \>" +outdir+"\/"+"Read_stat"+ "\/{1}.X.stat"
     runcmd(cmd)
     cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.X.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done >'''+outdir+"/Read_stat/Xmap.txt"
     runcmd(cmd)
@@ -99,7 +99,7 @@ def collect_Ymap(bamfile,quality,num_threshold,outdir):
     print(">> Collected feature of Y mapping rate")
     if not os.path.exists(outdir+"/"+"Read_stat"):
         os.makedirs(outdir+"/"+"Read_stat")
-    cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " {2} Y \| samtools flagstat -@ 10 - \>" +outdir+"/"+"Read_stat"+ "\/{1}.Y.stat"
+    cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " {2} Y chrY \| samtools flagstat -@ 10 - \>" +outdir+"/"+"Read_stat"+ "\/{1}.Y.stat"
     runcmd(cmd)
     cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.Y.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done >'''+outdir+"/Read_stat/Ymap.txt"
     runcmd(cmd)
