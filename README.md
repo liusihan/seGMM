@@ -98,7 +98,7 @@ seGMM -i input.vcf -b bam.file -r reference.txt -o outputdir
 ```
 
 ## Test for seGMM
-We have provide two reference file named ``1000G.WES.txt and 1000G.WGS.txt in reference folder``. Users can download these files and integrate with your own vcf and bam files(WES or WGS sequencing) to test the utility of seGMM. In addition, you can download test data from exon-targetted sequencing for 1000 genes from the 1000 Genomes Project in the ``test folder``. After download the file, you should make a ``bam.list`` file which contain sample ID and the full path of bam files. Then you can run
+We have provide two reference file named ``1000G.WES.txt and 1000G.WGS.txt in reference folder``. Users can download these files and integrate with your own vcf and bam files(WES or WGS sequencing) to test the utility of seGMM. In addition, you can download test data from exon-targetted sequencing for 1000 genes from the 1000 Genomes Project in the ``test folder`` or in Google Drive (https://drive.google.com/drive/folders/1OrPD8t7CFg7ytdZb7EHVmXnNWCFPA1oj?usp=sharing). After download the file, you should make a ``bam.list`` file which contain sample ID and the full path of bam files. Then you can run
 ```shell
 seGMM -i test.vcf -b bam.list -t TGS -c xy -s False -o seGMM_test
 ```
@@ -107,7 +107,7 @@ If everything goes well, you will see:
 seGMM -i test.vcf -b bam.list -t TGS -c xy -s False -o seGMM_test
 *********************************************************************
 * seGMM
-* Version 1.2.1
+* Version 1.2.6
 * (C) 2021-2026 Sihan Liu
 * Research Institute of Rare disease / West china hospital
 * GNU General Public License v3
