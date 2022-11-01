@@ -84,14 +84,14 @@ def collect_Xmap(bamfile,quality,num_threshold,outdir):
         os.makedirs(outdir+"/"+"Read_stat")
     cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " {2} X chrX \| samtools flagstat -@ 10 - \>" +outdir+"\/"+"Read_stat"+ "\/{1}.X.stat"
     runcmd(cmd)
-    cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.X.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done >'''+outdir+"/Read_stat/Xmap.txt"
+    cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.X.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done | sort -n -k 1 >'''+outdir+"/Read_stat/Xmap.txt"
     runcmd(cmd)
     if not os.path.isfile(outdir+"/total.txt"):
         collect_total(bamfile,quality,num_threshold,outdir)
-        cmd = "paste " + outdir+"/Read_stat/Xmap.txt " + outdir+"/total.txt" + ''' | awk 'BEGIN{OFS="\\t"}{print $1,$2/$4}' >''' + outdir+"/Xmap.txt"
+        cmd = "join " + outdir+"/Read_stat/Xmap.txt " + outdir+"/total.txt" + ''' | awk 'BEGIN{OFS="\\t"}{print $1,$2/$3}' >''' + outdir+"/Xmap.txt"
         runcmd(cmd)
     else:
-        cmd = "paste " + outdir+"/Read_stat/Xmap.txt " + outdir+"/total.txt" + ''' | awk 'BEGIN{OFS="\\t"}{print $1,$2/$4}' >''' + outdir+"/Xmap.txt"
+        cmd = "join " + outdir+"/Read_stat/Xmap.txt " + outdir+"/total.txt" + ''' | awk 'BEGIN{OFS="\\t"}{print $1,$2/$3}' >''' + outdir+"/Xmap.txt"
         runcmd(cmd)
     print('    Finish generate features of X mapping rate at {T} \n'.format(T=time.ctime()))
 
@@ -101,14 +101,14 @@ def collect_Ymap(bamfile,quality,num_threshold,outdir):
         os.makedirs(outdir+"/"+"Read_stat")
     cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " {2} Y chrY \| samtools flagstat -@ 10 - \>" +outdir+"/"+"Read_stat"+ "\/{1}.Y.stat"
     runcmd(cmd)
-    cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.Y.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done >'''+outdir+"/Read_stat/Ymap.txt"
+    cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.Y.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done | sort -n -k 1 >'''+outdir+"/Read_stat/Ymap.txt"
     runcmd(cmd)
     if not os.path.isfile(outdir+"/total.txt"):
         collect_total(bamfile,quality,num_threshold,outdir)
-        cmd = "paste " + outdir+"/Read_stat/Ymap.txt " + outdir+"/total.txt" + ''' | awk 'BEGIN{OFS="\\t"}{print $1,$2/$4}' >''' + outdir+"/Ymap.txt"
+        cmd = "join " + outdir+"/Read_stat/Ymap.txt " + outdir+"/total.txt" + ''' | awk 'BEGIN{OFS="\\t"}{print $1,$2/$3}' >''' + outdir+"/Ymap.txt"
         runcmd(cmd)
     else:
-        cmd = "paste " + outdir+"/Read_stat/Ymap.txt " + outdir+"/total.txt" + ''' | awk 'BEGIN{OFS="\\t"}{print $1,$2/$4}' >''' + outdir+"/Ymap.txt"
+        cmd = "join " + outdir+"/Read_stat/Ymap.txt " + outdir+"/total.txt" + ''' | awk 'BEGIN{OFS="\\t"}{print $1,$2/$3}' >''' + outdir+"/Ymap.txt"
         runcmd(cmd)
     print('    Finish generate features of Y mapping rate at {T} \n'.format(T=time.ctime()))
 
@@ -117,7 +117,7 @@ def collect_total(bamfile,quality,num_threshold,outdir):
         os.makedirs(outdir+"/"+"Read_stat")
     cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " {2} \| samtools flagstat -@ 10 - \>" +outdir+"/"+"Read_stat"+ "\/{1}.total.stat"
     runcmd(cmd)
-    cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.total.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done >'''+outdir+"/total.txt"
+    cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.total.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done | sort -n -k 1 >'''+outdir+"/total.txt"
     runcmd(cmd)
 
 def collect_SRY(bamfile,quality,genome_version,outdir):
@@ -126,7 +126,7 @@ def collect_SRY(bamfile,quality,genome_version,outdir):
         os.makedirs(outdir+"/"+"SRY")
     cmd="cat " + bamfile + ''' | awk '{print $1,$2}' | while read id dir; do mosdepth -t 4 -Q ''' + quality + " -b " + str(Path(__file__).absolute().parent)+"/data/SRY_"+ genome_version + ".bed -n "+ outdir+"/"+"SRY/$id $dir; done"
     runcmd(cmd)
-    cmd="cat "+bamfile+''' | awk '{print $1}' | while read id; do cat '''+outdir+"/SRY/$id.mosdepth.summary.txt | "+'''awk 'BEGIN{OFS="\\t"}NR==2{out1=$4}NR==3{out2=$4}END{if(out1!=0){print "'$id'",out1}else if(out2!=0){print "'$id'",out2}else{print "'$id'",0}}'; done | sort -n -k 1 >''' + outdir+"/SRY.txt"
+    cmd="cat "+bamfile+''' | awk '{print $1}' | while read id; do cat '''+outdir+"/SRY/$id.mosdepth.summary.txt | "+'''awk 'BEGIN{OFS="\\t"}NR==2{out1=$4}NR==3{out2=$4}END{if(out2!=0){print "'$id'",out2}else if(out1!=0){print "'$id'",out1}else{print "'$id'",0}}'; done | sort -n -k 1 >''' + outdir+"/SRY.txt"
     runcmd(cmd)
     print('    Finish generate features of mean depth of SRY gene at {T} \n'.format(T=time.ctime()))
 
@@ -148,12 +148,12 @@ def with_reference(feature, input_vcf,bamfile,quality,num_threshold,genome_versi
         if not os.path.isfile(Ymap):
             collect_Ymap(bamfile,quality,num_threshold,outdir)
         XYratio = outdir+"/XYratio.txt"
-        cmd = "paste "+Xmap+" " + Ymap + ''' | awk 'BEGIN{OFS="\\t"}{print $1,$2/$4}' >''' + XYratio
+        cmd = "join "+Xmap+" " + Ymap + ''' | awk 'BEGIN{OFS="\\t"}{print $1,$2/$3}' >''' + XYratio
         runcmd(cmd)
 
 def main():
     description = 'seGMM is a new tool to infer sex from massively parallel sequencing data. \n Written by Sihan Liu, liusihan@wchscu.cn. \n Please contact the authors for commercial use. \n Copyright (C) 2021 Institute of rare diseases\n============================================================================'
-    __version__ = '1.2.1'
+    __version__ = '1.2.6'
     header = "\n"
     header = "*********************************************************************\n"
     header += "* seGMM\n"
@@ -211,66 +211,66 @@ def main():
         if os.path.isfile(args.input) and os.path.isfile(args.bam):
             if args.reference is None:
                 if args.type == "WES" or args.type == "WGS":
-                    print('Beginning generate features at {T}'.format(T=time.ctime()))
+                    print('Beginning to generate features at {T}'.format(T=time.ctime()))
                     start_time = time.time()
                     collect_XH(args.input,args.output)
                     collect_Xmap(args.bam,quality,num_threshold,args.output)
                     collect_Ymap(args.bam,quality,num_threshold,args.output)
                     collect_SRY(args.bam,quality,genome,args.output)
                     print(">> Combine features into a single file\n")
-                    cmd="paste "+args.output+"/XH.sorted.txt "+args.output+"/Xmap.txt "+args.output+"/Ymap.txt "+args.output+"/SRY.txt" +''' | awk 'BEGIN{OFS="\\t";print "sampleid","XH","Xmap","Ymap","XYratio","SRY"}{print $1,$2,$4,$6,$4/$6,$NF}' > '''+args.output+"/feature.txt"
+                    cmd="join "+args.output+"/XH.sorted.txt "+args.output+"/Xmap.txt | join - "+args.output+"/Ymap.txt  | join - "+args.output+"/SRY.txt" +''' | awk 'BEGIN{OFS="\\t";print "sampleid","XH","Xmap","Ymap","XYratio","SRY"}{print $1,$2,$3,$4,$3/$4,$NF}' > '''+args.output+"/feature.txt"
                     runcmd(cmd)
-                    print(">> Running sample classfication based on GMM model")
+                    print(">> Running sample classification based on GMM model")
                     cmd="Rscript "+ str(Path(__file__).absolute().parent)+"/script/seGMM.r " +args.output+"/feature.txt "+str(uncertain_threshold)+" "+args.output
                     subprocess.run(cmd,shell=True)
                 elif args.type == "TGS":
                     if args.chromosome=="x" and args.SRY!="True":
-                        print('Beginning generate features at {T}'.format(T=time.ctime()))
+                        print('Beginning to generate features at {T}'.format(T=time.ctime()))
                         start_time = time.time()
                         collect_XH(args.input,args.output)
                         collect_Xmap(args.bam,quality,num_threshold,args.output)
                         print(">> Combine features into a single file\n")
-                        cmd="paste "+args.output+"/XH.sorted.txt "+args.output+"/Xmap.txt"+''' | awk 'BEGIN{OFS="\\t";print "sampleid","XH","Xmap"}{print $1,$2,$4}' > '''+args.output+"/feature.txt"
+                        cmd="join "+args.output+"/XH.sorted.txt "+args.output+"/Xmap.txt"+''' | awk 'BEGIN{OFS="\\t";print "sampleid","XH","Xmap"}{print $1,$2,$3}' > '''+args.output+"/feature.txt"
                         runcmd(cmd)
-                        print(">> Running sample classfication based on GMM model")
+                        print(">> Running sample classification based on GMM model")
                         cmd="Rscript "+ str(Path(__file__).absolute().parent)+"/script/seGMM.r " +args.output+"/feature.txt "+str(uncertain_threshold)+" "+args.output
                         subprocess.run(cmd,shell=True)
                     elif args.chromosome=="y" and args.SRY=="True":
-                        print('Beginning generate features at {T}'.format(T=time.ctime()))
+                        print('Beginning to generate features at {T}'.format(T=time.ctime()))
                         start_time = time.time()
                         collect_Ymap(args.bam,quality,num_threshold,args.output)
                         collect_SRY(args.bam,quality,genome,args.output)
                         print(">> Combine features into a single file\n")
-                        cmd="paste "+args.output+"/Ymap.txt "+args.output+"/SRY.txt" +''' | awk 'BEGIN{OFS="\\t";print "sampleid","Ymap","SRY"}{print $1,$2,$NF}' >'''+args.output+"/feature.txt"
+                        cmd="join "+args.output+"/Ymap.txt "+args.output+"/SRY.txt" +''' | awk 'BEGIN{OFS="\\t";print "sampleid","Ymap","SRY"}{print $1,$2,$NF}' >'''+args.output+"/feature.txt"
                         runcmd(cmd)
-                        print(">> Running sample classfication based on GMM model")
+                        print(">> Running sample classification based on GMM model")
                         cmd="Rscript "+ str(Path(__file__).absolute().parent)+"/script/seGMM.r " +args.output+"/feature.txt "+str(uncertain_threshold)+" "+args.output
                         subprocess.run(cmd,shell=True)
                     elif args.chromosome=="y" and args.SRY=="False":
                         sys.exit('Error, at least 2 features are required by GMM model')
                     elif args.chromosome=="xy" and args.SRY=="False":
-                        print('Beginning generate features at {T}'.format(T=time.ctime()))
+                        print('Beginning to generate features at {T}'.format(T=time.ctime()))
                         start_time = time.time()
                         collect_XH(args.input,args.output)
                         collect_Xmap(args.bam,quality,num_threshold,args.output)
                         collect_Ymap(args.bam,quality,num_threshold,args.output)
                         print(">> Combine features into a single file\n")
-                        cmd="paste "+args.output+"/XH.sorted.txt "+args.output+"/Xmap.txt "+args.output+"/Ymap.txt "+''' | awk 'BEGIN{OFS="\\t";print "sampleid","XH","Xmap","Ymap","XYratio"}{print $1,$2,$4,$6,$4/$6}' >'''+args.output+"/feature.txt"
+                        cmd="join "+args.output+"/XH.sorted.txt "+args.output+"/Xmap.txt  | join - "+args.output+"/Ymap.txt "+''' | awk 'BEGIN{OFS="\\t";print "sampleid","XH","Xmap","Ymap","XYratio"}{print $1,$2,$3,$4,$3/$4}' >'''+args.output+"/feature.txt"
                         runcmd(cmd)
-                        print(">> Running sample classfication based on GMM model")
+                        print(">> Running sample classification based on GMM model")
                         cmd="Rscript "+ str(Path(__file__).absolute().parent)+"/script/seGMM.r " +args.output+"/feature.txt "+str(uncertain_threshold)+" "+args.output
                         subprocess.run(cmd,shell=True)
                     elif args.chromosome=="xy" and args.SRY=="True":
-                        print('Beginning generate features at {T}'.format(T=time.ctime()))
+                        print('Beginning to generate features at {T}'.format(T=time.ctime()))
                         start_time = time.time()
                         collect_XH(args.input,args.output)
                         collect_Xmap(args.bam,quality,num_threshold,args.output)
                         collect_Ymap(args.bam,quality,num_threshold,args.output)
                         collect_SRY(args.bam,quality,genome,args.output)
                         print(">> Combine features into a single file\n")
-                        cmd="paste "+args.output+"/XH.sorted.txt "+args.output+"/Xmap.txt "+args.output+"/Ymap.txt "+args.output+"/SRY.txt" +''' | awk 'BEGIN{OFS="\\t";print "sampleid","XH","Xmap","Ymap","XYratio","SRY"}{print $1,$2,$4,$6,$4/$6,$NF}' >'''+args.output+"/feature.txt"
+                        cmd="join "+args.output+"/XH.sorted.txt "+args.output+"/Xmap.txt  | join - "+args.output+"/Ymap.txt  | join - "+args.output+"/SRY.txt" +''' | awk 'BEGIN{OFS="\\t";print "sampleid","XH","Xmap","Ymap","XYratio","SRY"}{print $1,$2,$3,$4,$3/$4,$NF}' >'''+args.output+"/feature.txt"
                         runcmd(cmd)
-                        print(">> Running sample classfication based on GMM model")
+                        print(">> Running sample classification based on GMM model")
                         cmd="Rscript "+ str(Path(__file__).absolute().parent)+"/script/seGMM.r " +args.output+"/feature.txt "+str(uncertain_threshold)+" "+args.output
                         subprocess.run(cmd,shell=True)
                     else:
