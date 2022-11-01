@@ -67,7 +67,7 @@ to print a list of all command-line options. If these commands fail with an erro
 |Parameter|Type| Description|Required|
 |---|---|---|---|
 |--vcf/-vcf|character|Input VCF file (Either multi-sample or single-sample data. If the sample size is < 10, please combine with a reference data for prediction analysis). |``true``|
-|--input/-i|character| Input file contain sampleid and directory of bam/cram files. A text file which contain two columns with no header and split by space. The first column is the sample ID which match the sample ID in the input vcf file. The order of the sample ID in bam.file and the order of the sample ID in the VCF file can be inconsistent. **An example file has been provided in the test fold.**|``true``|
+|--input/-i|character| Input file contain sampleid and directory of bam/cram files. A text file which contain two columns with no header and split by space. The first column is the sample ID which match the sample ID in the input vcf file. The order of the sample ID in input file and the order of the sample ID in the VCF file can be inconsistent. **An example file has been provided in the test fold.**|``true``|
 |--alignment_format/-a|character| Alignment format type for the input data.** Optional is {BAM, CRAM}.**|``true``|
 |--reference_fasta/-R|character| Reference genome for **CRAM** support (if CRAM is used). [default: '']|``true``|
 |--chromosome/-c|character|Sex chromosomes used to collect features. **Optional is {xy,x,y}. If --reference is used, you can no longer use this parameter**|``false``|
