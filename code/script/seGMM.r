@@ -81,7 +81,7 @@ for(i in features_name){
 }
 
 
-if("Xmap" %in% colnames(feature) & "Ymap" %in% colnames(feature)){
+if("Xmap" %in% colnames(feature) & "Ymap" %in% colnames(feature) & nrow(feature[feature$Predict=="Female",])>3 & nrow(feature[feature$Predict=="Male",])>3){
     mean_f_xmap<-mean(feature[feature$karyotypes=="XX","Xmap"])
     mean_f_ymap<-mean(feature[feature$karyotypes=="XX","Ymap"])
     sd_f_xmap<-sd(feature[feature$karyotypes=="XX","Xmap"])
@@ -91,17 +91,21 @@ if("Xmap" %in% colnames(feature) & "Ymap" %in% colnames(feature)){
     sd_m_xmap<-sd(feature[feature$karyotypes=="XY","Xmap"])
     sd_m_ymap<-sd(feature[feature$karyotypes=="XY","Ymap"])
     for(i in 1:nrow(feature)){
-        if(feature[i,"Xmap"]>(mean_m_xmap-3*sd_m_xmap) & feature[i,"Xmap"]<(mean_m_xmap+3*sd_m_xmap) & feature[i,"Ymap"]>(mean_m_ymap-3*sd_m_ymap) & feature[i,"Ymap"]<(mean_m_ymap+3*sd_m_ymap)){
+        if(feature[i,"Xmap"]>(mean_m_xmap-3*sd_m_xmap) & feature[i,"Xmap"]<(mean_m_xmap+3*sd_m_xmap) & feature[i,"Ymap"]>(mean_m_ymap-3*sd_m_ymap) & feature[i,"Ymap"]<(mean_m_ymap+3*sd_m_ymap) & feature[i,"Predict"]=="Male"){
             feature$karyotypes[i] = "XY"
-        } else if (feature[i,"Xmap"]>(mean_m_xmap-3*sd_m_xmap) & feature[i,"Xmap"]<(mean_m_xmap+3*sd_m_xmap) & feature[i,"Ymap"]>(2*mean_m_ymap)){
+        } else if (feature[i,"Xmap"]>(mean_m_xmap-3*sd_m_xmap) & feature[i,"Xmap"]<(mean_m_xmap+3*sd_m_xmap) & feature[i,"Ymap"]>(2*mean_m_ymap) & feature[i,"Predict"]=="Male"){
             feature$karyotypes[i] = "XYY"
-        } else if (feature[i,"Xmap"]>(mean_f_xmap-3*sd_f_xmap) & feature[i,"Xmap"]<(mean_f_xmap+3*sd_f_xmap) & feature[i,"Ymap"]>(mean_f_ymap-3*sd_f_ymap) & feature[i,"Ymap"]<(mean_f_ymap+3*sd_f_ymap)){
-            feature$karyotypes[i] = "XX"
-        } else if (feature[i,"Xmap"]>(2*mean_f_xmap) & feature[i,"Ymap"]>(mean_m_ymap-3*sd_m_ymap) & feature[i,"Ymap"]<(mean_m_ymap+3*sd_m_ymap)){
+        } else if (feature[i,"Xmap"]>(2*mean_m_xmap) & feature[i,"Ymap"]>(mean_m_ymap-3*sd_m_ymap) & feature[i,"Ymap"]<(mean_m_ymap+3*sd_m_ymap) & feature[i,"Predict"]=="Male"){
             feature$karyotypes[i] = "XXY"
-        } else if (feature[i,"Xmap"]>(3*mean_f_xmap) & feature[i,"Ymap"]>(mean_f_ymap-3*sd_f_ymap) & feature[i,"Ymap"]<(mean_f_ymap+3*sd_f_ymap)){
+        } else if (feature[i,"Xmap"]<(mean_m_xmap/5) & feature[i,"Ymap"]>(mean_m_ymap-3*sd_m_ymap) & feature[i,"Ymap"]<(mean_m_ymap+3*sd_m_ymap) & feature[i,"Predict"]=="Male"){
+            feature$karyotypes[i] = "Y"
+        } else if (feature[i,"Xmap"]>(mean_f_xmap-3*sd_f_xmap) & feature[i,"Xmap"]<(mean_f_xmap+3*sd_f_xmap) & feature[i,"Ymap"]>(mean_f_ymap-3*sd_f_ymap) & feature[i,"Ymap"]<(mean_f_ymap+3*sd_f_ymap) & feature[i,"Predict"]=="Female"){
+            feature$karyotypes[i] = "XX"
+        } else if (feature[i,"Ymap"]>(3*mean_f_ymap) & feature[i,"Xmap"]>(mean_f_xmap-3*sd_f_xmap) & feature[i,"Xmap"]<(mean_f_xmap+3*sd_f_xmap) & feature[i,"Predict"]=="Female"){
+            feature$karyotypes[i] = "XXY"
+        } else if (feature[i,"Xmap"]>(2*mean_f_xmap) & feature[i,"Ymap"]>(mean_f_ymap-3*sd_f_ymap) & feature[i,"Ymap"]<(mean_f_ymap+3*sd_f_ymap) & feature[i,"Predict"]=="Female"){
             feature$karyotypes[i] = "XXX"
-        } else if (feature[i,"Xmap"]<(0.5*mean_f_xmap) & feature[i,"Ymap"]>(mean_f_ymap-3*sd_f_ymap) & feature[i,"Ymap"]<(mean_f_ymap+3*sd_f_ymap)){
+        } else if (feature[i,"Xmap"]<(0.5*mean_f_xmap) & feature[i,"Ymap"]>(mean_f_ymap-3*sd_f_ymap) & feature[i,"Ymap"]<(mean_f_ymap+3*sd_f_ymap) & feature[i,"Predict"]=="Female"){
             feature$karyotypes[i] = "X"
         }
         else{
