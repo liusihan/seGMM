@@ -68,10 +68,10 @@ to print a list of all command-line options. If these commands fail with an erro
 |---|---|---|---|
 |--vcf/-vcf|character|Input VCF file (Either multi-sample or single-sample data. If the sample size is < 10, please combine with a reference data for prediction analysis). |``true``|
 |--input/-i|character| Input file contain sampleid and directory of bam/cram files. A text file which contain two columns with no header and split by space. The first column is the sample ID which match the sample ID in the input vcf file. The order of the sample ID in input file and the order of the sample ID in the VCF file can be inconsistent. **An example file has been provided in the test fold.**|``true``|
-|--alignment_format/-a|character| Alignment format type for the input data.** Optional is {BAM, CRAM}.**|``true``|
+|--alignment_format/-a|character| Alignment format type for the input data.**Optional is {BAM, CRAM}.**|``true``|
 |--reference_fasta/-R|character| Reference genome for **CRAM** support (if CRAM is used). [default: '']|``true``|
 |--chromosome/-c|character|Sex chromosomes used to collect features. **Optional is {xy,x,y}. If --reference is used, you can no longer use this parameter**|``false``|
-|--type/-t|character|Sequencing type. Note that if your **don't provide an additional reference data, you must use --type.** If the data type is WGS or WES, seGMM will automatic calculated all 5 features, otherwise if your **sequencing type is TGS you have to choice which sex chromosome you want to use (--chromosome/-c) and tell seGMM the SRY gene is included or not (--SRY/-s)**|``false``|
+|--type/-t|character|Sequencing type. **Optional is {TGS, WES,WGS}.** Note that if your **don't provide an additional reference data, you must use --type.** If the data type is WGS or WES, seGMM will automatic calculated all 5 features, otherwise if your **sequencing type is TGS you have to choice which sex chromosome you want to use (--chromosome/-c) and tell seGMM the SRY gene is included or not (--SRY/-s)**|``false``|
 |--output/-o|character|Prefix of output directory.|``true``|
 |--genome/-g|character|Genome version. **Default is hg19. Option is {hg19,hg38}**.|``false``|                        
 |--SRY/-s|boolean|If **True**, seGMM will calculate the mean depth of SRY gene. **Option is {True,False}**. |``false``|
