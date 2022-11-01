@@ -66,34 +66,36 @@ to print a list of all command-line options. If these commands fail with an erro
 
 |Parameter|Type| Description|Required|
 |---|---|---|---|
-|--input/-i|character|The input vcf file which contains all the samples you want to infer gender. |``true``|
-|--bam/-b|character|"Bam.file". A text file which contain two columns with no header and split by space. The first column is the sample ID which match the sample ID in the input vcf file. The order of the sample ID in bam.file and the order of the sample ID in the VCF file can be inconsistent. **An example file has been provided in the test fold.**|``true``|
-|--chromosome/-c|character|Sex chromosome to use collect features. **Optional is {xy,x,y}. If --reference is used, you can no longer use this parameter**|``false``|
+|--vcf/-vcf|character|Input VCF file (Either multi-sample or single-sample data. If the sample size is < 10, please combine with a reference data for prediction analysis). |``true``|
+|--input/-i|character| Input file contain sampleid and directory of bam/cram files. A text file which contain two columns with no header and split by space. The first column is the sample ID which match the sample ID in the input vcf file. The order of the sample ID in bam.file and the order of the sample ID in the VCF file can be inconsistent. **An example file has been provided in the test fold.**|``true``|
+|--alignment_format/-a|character| Alignment format type for the input data.** Optional is {BAM, CRAM}.**|``true``|
+|--reference_fasta/-R|character| Reference genome for **CRAM** support (if CRAM is used). [default: '']|``true``|
+|--chromosome/-c|character|Sex chromosomes used to collect features. **Optional is {xy,x,y}. If --reference is used, you can no longer use this parameter**|``false``|
 |--type/-t|character|Sequencing type. Note that if your **don't provide an additional reference data, you must use --type.** If the data type is WGS or WES, seGMM will automatic calculated all 5 features, otherwise if your **sequencing type is TGS you have to choice which sex chromosome you want to use (--chromosome/-c) and tell seGMM the SRY gene is included or not (--SRY/-s)**|``false``|
 |--output/-o|character|Prefix of output directory.|``true``|
 |--genome/-g|character|Genome version. **Default is hg19. Option is {hg19,hg38}**.|``false``|                        
 |--SRY/-s|boolean|If **True**, seGMM will calculate the mean depth of SRY gene. **Option is {True,False}**. |``false``|
-|--reference/-r|character|The path of additional reference file contain features. We have provided two additinal files (**1000G.WES.txt and 1000G.WGS.txt in reference folder**). If **--reference is used, seGMM will automatically calculated the same features in the reference file. The file (tab split) must contain at least two features, and the column names must be: sampleid,XH,Xmap,Ymap,XYratio,SRY. The ordering of the columns is arbitrary, except for the first instance, which must be the sample name** |``false``|
+|--reference_additional/-r|character|The path of additional reference file contain features. We have provided two additinal files (**1000G.WES.txt and 1000G.WGS.txt in reference folder**). If **--reference is used, seGMM will automatically calculated the same features in the reference file. The file (tab split) must contain at least two features, and the column names must be: sampleid,XH,Xmap,Ymap,XYratio,SRY. The ordering of the columns is arbitrary, except for the first instance, which must be the sample name** |``false``|
 |--uncertain_threshold/-u|numeric|The threshold for detecting outliers in GMM model. **Default is 0.1. The range of threshold is 0-1.**|``false``|
 |--num_threshold/-n|numeric|Number of additional threads to use. Default is 1.|``false``|
 |--Qulity/-q|numeric|Mapping quality threshold of reads to count. Default is 30.|``false``|
 
 ## Usage examples
 ```shell
-## For WES and WGS data. Using 20 cores
-seGMM -i input.vcf -b bam.file -t WES -o outputdir -n 20
+## For WES data (CRAM). Using 20 cores
+seGMM -vcf input.vcf -i cram.file -R GRCh38.fa -g hg38 -a CRAM -t WES -n 20 -o outputdir
 
 ## For TGS data
 # The gene panel contains only genes located on the X chromosome
-seGMM -i input.vcf -b bam.file -t TGS -o outputdir -c x -s False
+seGMM -vcf input.vcf -i bam.file -a BAM -t TGS -o outputdir -c x -s False
 
 # The gene panel contains genes located on the X and Y chromosome, but don't contain SRY
-seGMM -i input.vcf -b bam.file -t TGS -o outputdir -c xy -s False
+seGMM -vcf input.vcf -i bam.file -a BAM -t TGS -o outputdir -c xy -s False
 
 ## With an additional reference file. Note the header of referenc file must like: sampleid,XH,Xmap,Ymap,XYraio,SRY. 
 ## And seGMM will automatically calculated the same features in the reference file. 
 ## We have provided two additinal files (1000G.WES.txt and 1000G.WGS.txt in reference folder).
-seGMM -i input.vcf -b bam.file -r reference.txt -o outputdir
+seGMM -vcf test.vcf -i cram.file -R GRCh38.fa -g hg38 -a CRAM -t WES -r 1000G.WES.txt -o outputdir
 
 ```
 
@@ -104,29 +106,25 @@ seGMM -i test.vcf -b bam.list -t TGS -c xy -s False -o seGMM_test
 ```
 If everything goes well, you will see:
 ```
-seGMM -i test.vcf -b bam.list -t TGS -c xy -s False -o seGMM_test
+seGMM -vcf test.vcf -i Target.bam.list -t TGS -a BAM -o output -c x -s False
 *********************************************************************
 * seGMM
-* Version 1.2.6
+* Version 1.3.0
 * (C) 2021-2026 Sihan Liu
 * Research Institute of Rare disease / West china hospital
 * GNU General Public License v3
 *********************************************************************
 
-Warning, the output file is not exist, seGMM creates the output folder of seGMM_test first!
-Beginning generate features at Thu Nov 25 14:10:23 2021
+Beginning to generate features at Tue Nov  1 17:17:09 2022
 >> Collected feature of X chromosome heterozygosity
-    Finish generate features of X chromosome heterozygosity at Thu Nov 25 14:10:24 2021
+    Finish generate features of X chromosome heterozygosity at Tue Nov  1 17:17:13 2022
 
 >> Collected feature of X mapping rate
-    Finish generate features of X mapping rate at Thu Nov 25 14:10:37 2021
-
->> Collected feature of Y mapping rate
-    Finish generate features of Y mapping rate at Thu Nov 25 14:10:38 2021
+    Finish generate features of X mapping rate at Tue Nov  1 17:17:17 2022
 
 >> Combine features into a single file
 
->> Running sample classfication based on GMM model
+>> Running sample classification based on GMM model
 WARNING: ignoring environment value of R_HOME
 [1] "There are 0 outliers samples based on prediction uncertainty"
 character(0)
@@ -134,8 +132,8 @@ outliers
 FALSE
    10
 
-Analysis complete for seGMM at Thu Nov 25 14:10:38 2021
-Total time elapsed: 15.59s
+Analysis complete for seGMM at Tue Nov  1 17:17:18 2022
+Total time elapsed: 9.49s
 
 *********************************************************************
 * Thanks for using seGMM!
