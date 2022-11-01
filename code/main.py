@@ -78,16 +78,27 @@ def collect_XH(input_vcf,outdir):
     runcmd(cmd)
     print('    Finish generate features of X chromosome heterozygosity at {T} \n'.format(T=time.ctime()))
 
-def collect_Xmap(bamfile,quality,num_threshold,outdir):
+def collect_Xmap(bamfile,fill_type,fasta,quality,num_threshold,outdir):
     print(">> Collected feature of X mapping rate")
     if not os.path.exists(outdir+"/"+"Read_stat"):
         os.makedirs(outdir+"/"+"Read_stat")
-    cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " {2} X chrX \| samtools flagstat -@ 10 - \>" +outdir+"\/"+"Read_stat"+ "\/{1}.X.stat"
-    runcmd(cmd)
-    cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.X.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done | sort -n -k 1 >'''+outdir+"/Read_stat/Xmap.txt"
-    runcmd(cmd)
+    if fill_type == "BAM": 
+        cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " {2} X chrX \| samtools flagstat -@ 10 - \>" +outdir+"\/"+"Read_stat"+ "\/{1}.X.stat"
+        runcmd(cmd)
+        cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.X.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done | sort -n -k 1 >'''+outdir+"/Read_stat/Xmap.txt"
+        runcmd(cmd)
+    elif fill_type == "CRAM":
+        if fasta == " ":
+            sys.exit('Error, the fasta file for use with CRAM files is empty, please use --reference_fasta or -R!')
+        elif not os.path.isfile(fasta):
+            sys.exit('Error, the input reference fasta file is not exist, please check that you have provided the correct path!')
+        else:
+            cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " -T " + fasta +" {2} X chrX \| samtools flagstat -@ 10 - \>" +outdir+"\/"+"Read_stat"+ "\/{1}.X.stat"
+            runcmd(cmd)
+            cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.X.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done | sort -n -k 1 >'''+outdir+"/Read_stat/Xmap.txt"
+            runcmd(cmd)
     if not os.path.isfile(outdir+"/total.txt"):
-        collect_total(bamfile,quality,num_threshold,outdir)
+        collect_total(bamfile,fill_type,fasta,quality,num_threshold,outdir)
         cmd = "join " + outdir+"/Read_stat/Xmap.txt " + outdir+"/total.txt" + ''' | awk 'BEGIN{OFS="\\t"}{print $1,$2/$3}' >''' + outdir+"/Xmap.txt"
         runcmd(cmd)
     else:
@@ -95,16 +106,27 @@ def collect_Xmap(bamfile,quality,num_threshold,outdir):
         runcmd(cmd)
     print('    Finish generate features of X mapping rate at {T} \n'.format(T=time.ctime()))
 
-def collect_Ymap(bamfile,quality,num_threshold,outdir):
+def collect_Ymap(bamfile,fill_type,fasta,quality,num_threshold,outdir):
     print(">> Collected feature of Y mapping rate")
     if not os.path.exists(outdir+"/"+"Read_stat"):
         os.makedirs(outdir+"/"+"Read_stat")
-    cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " {2} Y chrY \| samtools flagstat -@ 10 - \>" +outdir+"/"+"Read_stat"+ "\/{1}.Y.stat"
-    runcmd(cmd)
-    cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.Y.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done | sort -n -k 1 >'''+outdir+"/Read_stat/Ymap.txt"
-    runcmd(cmd)
+    if fill_type == "BAM": 
+        cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " {2} Y chrY \| samtools flagstat -@ 10 - \>" +outdir+"/"+"Read_stat"+ "\/{1}.Y.stat"
+        runcmd(cmd)
+        cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.Y.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done | sort -n -k 1 >'''+outdir+"/Read_stat/Ymap.txt"
+        runcmd(cmd)
+    elif fill_type == "CRAM":
+        if fasta == " ":
+            sys.exit('Error, the fasta file for use with CRAM files is empty, please use --reference_fasta or -R!')
+        elif not os.path.isfile(fasta):
+            sys.exit('Error, the input reference fasta file is not exist, please check that you have provided the correct path!')
+        else:
+            cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " -T " + fasta +" {2} Y chrY \| samtools flagstat -@ 10 - \>" +outdir+"\/"+"Read_stat"+ "\/{1}.Y.stat"
+            runcmd(cmd)
+            cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.Y.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done | sort -n -k 1 >'''+outdir+"/Read_stat/Ymap.txt"
+            runcmd(cmd)
     if not os.path.isfile(outdir+"/total.txt"):
-        collect_total(bamfile,quality,num_threshold,outdir)
+        collect_total(bamfile,fill_type,fasta,quality,num_threshold,outdir)
         cmd = "join " + outdir+"/Read_stat/Ymap.txt " + outdir+"/total.txt" + ''' | awk 'BEGIN{OFS="\\t"}{print $1,$2/$3}' >''' + outdir+"/Ymap.txt"
         runcmd(cmd)
     else:
@@ -112,47 +134,69 @@ def collect_Ymap(bamfile,quality,num_threshold,outdir):
         runcmd(cmd)
     print('    Finish generate features of Y mapping rate at {T} \n'.format(T=time.ctime()))
 
-def collect_total(bamfile,quality,num_threshold,outdir):
+def collect_total(bamfile,fill_type,fasta,quality,num_threshold,outdir):
     if not os.path.exists(outdir+"/"+"Read_stat"):
         os.makedirs(outdir+"/"+"Read_stat")
-    cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " {2} \| samtools flagstat -@ 10 - \>" +outdir+"/"+"Read_stat"+ "\/{1}.total.stat"
-    runcmd(cmd)
-    cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.total.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done | sort -n -k 1 >'''+outdir+"/total.txt"
-    runcmd(cmd)
+    if fill_type == "BAM": 
+        cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " {2} \| samtools flagstat -@ 10 - \>" +outdir+"/"+"Read_stat"+ "\/{1}.total.stat"
+        runcmd(cmd)
+        cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.total.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done | sort -n -k 1 >'''+outdir+"/total.txt"
+        runcmd(cmd)
+    elif fill_type == "CRAM":
+        if fasta == " ":
+            sys.exit('Error, the fasta file for use with CRAM files is empty, please use --reference_fasta or -R!')
+        elif not os.path.isfile(fasta):
+            sys.exit('Error, the input reference fasta file is not exist, please check that you have provided the correct path!')
+        else:
+            cmd="cat " + bamfile + ''' | awk '{print $1"\\n"$2}' | parallel -j ''' + num_threshold +" --max-args 2 samtools view -@ 10 -bh -q " + quality + " -T " + fasta +" {2} \| samtools flagstat -@ 10 - \>" +outdir+"\/"+"Read_stat"+ "\/{1}.total.stat"
+            runcmd(cmd)
+            cmd="cat " + bamfile + ''' | awk '{print $1}' | while read id; do cat ''' + outdir+"/"+"Read_stat/$id.total.stat" + ''' | awk 'BEGIN{OFS="\\t"}NR==9{print "'$id'",$1}' ;done | sort -n -k 1 >'''+outdir+"/total.txt"
+            runcmd(cmd)
 
-def collect_SRY(bamfile,quality,genome_version,outdir):
+def collect_SRY(bamfile,fill_type,fasta,quality,genome_version,outdir):
     print(">> Collected feature of mean depth of SRY gene")
     if not os.path.exists(outdir+"/"+"SRY"):
         os.makedirs(outdir+"/"+"SRY")
-    cmd="cat " + bamfile + ''' | awk '{print $1,$2}' | while read id dir; do mosdepth -t 4 -Q ''' + quality + " -b " + str(Path(__file__).absolute().parent)+"/data/SRY_"+ genome_version + ".bed -n "+ outdir+"/"+"SRY/$id $dir; done"
-    runcmd(cmd)
-    cmd="cat "+bamfile+''' | awk '{print $1}' | while read id; do cat '''+outdir+"/SRY/$id.mosdepth.summary.txt | "+'''awk 'BEGIN{OFS="\\t"}NR==2{out1=$4}NR==3{out2=$4}END{if(out2!=0){print "'$id'",out2}else if(out1!=0){print "'$id'",out1}else{print "'$id'",0}}'; done | sort -n -k 1 >''' + outdir+"/SRY.txt"
-    runcmd(cmd)
+    if fill_type == "BAM": 
+        cmd="cat " + bamfile + ''' | awk '{print $1,$2}' | while read id dir; do mosdepth -t 4 -Q ''' + quality + " -b " + str(Path(__file__).absolute().parent)+"/data/SRY_"+ genome_version + ".bed -n "+ outdir+"/"+"SRY/$id $dir; done"
+        runcmd(cmd)
+        cmd="cat "+bamfile+''' | awk '{print $1}' | while read id; do cat '''+outdir+"/SRY/$id.mosdepth.summary.txt | "+'''awk 'BEGIN{OFS="\\t"}NR==2{out1=$4}NR==3{out2=$4}END{if(out2!=0){print "'$id'",out2}else if(out1!=0){print "'$id'",out1}else{print "'$id'",0}}'; done | sort -n -k 1 >''' + outdir+"/SRY.txt"
+        runcmd(cmd)
+    elif fill_type == "CRAM":
+        if fasta == " ":
+            sys.exit('Error, the fasta file for use with CRAM files is empty, please use --reference_fasta or -R!')
+        elif not os.path.isfile(fasta):
+            sys.exit('Error, the input reference fasta file is not exist, please check that you have provided the correct path!')
+        else:
+            cmd="cat " + bamfile + ''' | awk '{print $1,$2}' | while read id dir; do mosdepth -t 4 -Q ''' + quality + " -f " + fasta + " -b " + str(Path(__file__).absolute().parent)+"/data/SRY_"+ genome_version + ".bed -n "+ outdir+"/"+"SRY/$id $dir; done"
+            runcmd(cmd)
+            cmd="cat "+bamfile+''' | awk '{print $1}' | while read id; do cat '''+outdir+"/SRY/$id.mosdepth.summary.txt | "+'''awk 'BEGIN{OFS="\\t"}NR==2{out1=$4}NR==3{out2=$4}END{if(out2!=0){print "'$id'",out2}else if(out1!=0){print "'$id'",out1}else{print "'$id'",0}}'; done | sort -n -k 1 >''' + outdir+"/SRY.txt"
+            runcmd(cmd)
     print('    Finish generate features of mean depth of SRY gene at {T} \n'.format(T=time.ctime()))
 
 
-def with_reference(feature, input_vcf,bamfile,quality,num_threshold,genome_version,outdir):
+def with_reference(feature, input_vcf,bamfile,fill_type,fasta,quality,num_threshold,genome_version,outdir):
     if feature == "XH":
         collect_XH(input_vcf,outdir)
     if feature == "Xmap":
-        collect_Xmap(bamfile,quality,num_threshold,outdir)
+        collect_Xmap(bamfile,fill_type,fasta,quality,num_threshold,outdir)
     if feature == "Ymap":
-        collect_Ymap(bamfile,quality,num_threshold,outdir)
+        collect_Ymap(bamfile,fill_type,fasta,quality,num_threshold,outdir)
     if feature == "SRY":
-        collect_SRY(bamfile,quality,genome_version,outdir)
+        collect_SRY(bamfile,fill_type,fasta,quality,genome_version,outdir)
     if feature == "XYratio":
         Xmap = outdir+"/Xmap.txt"
         Ymap = outdir+"/Ymap.txt"
         if not os.path.isfile(Xmap):
-            collect_Xmap(bamfile,quality,num_threshold,outdir)
+            collect_Xmap(bamfile,fill_type,fasta,quality,num_threshold,outdir)
         if not os.path.isfile(Ymap):
-            collect_Ymap(bamfile,quality,num_threshold,outdir)
+            collect_Ymap(bamfile,fill_type,fasta,quality,num_threshold,outdir)
         XYratio = outdir+"/XYratio.txt"
         cmd = "join "+Xmap+" " + Ymap + ''' | awk 'BEGIN{OFS="\\t"}{print $1,$2/$3}' >''' + XYratio
         runcmd(cmd)
 
 def main():
-    description = 'seGMM is a new tool to infer sex from massively parallel sequencing data. \n Written by Sihan Liu, liusihan@wchscu.cn. \n Please contact the authors for commercial use. \n Copyright (C) 2021 Institute of rare diseases\n============================================================================'
+    description = "seGMM is a tool to infer gender from massively parallel sequencing data. \n Written by Sihan Liu, liusihan@wchscu.cn. \n Please contact the authors for commercial use. \n Copyright (C) 2021 Institute of rare diseases.\n==============================================================================\n"
     __version__ = '1.2.6'
     header = "\n"
     header = "*********************************************************************\n"
@@ -171,21 +215,24 @@ def main():
 
 #Usage
     parser = argparse.ArgumentParser(description = description)
-    parser.add_argument("--input","-i",required = True,help = "Input of VCF file.")
-    parser.add_argument("--bam","-b",required = True,help = "File contain sampleid and directory of bam file (no header)")
-    parser.add_argument("--chromosome","-c",required = False,help = "Sex chromosome to use collect features. ",choices=["xy","x","y"])
+    parser.add_argument("--vcf","-vcf",required = True,help = "Input VCF file (Either multi-sample or single-sample data. If the sample size is < 10, please combine with a reference data for prediction analysis).")
+    parser.add_argument("--input","-i",required = True,help = "Input file contain sampleid and directory of bam/cram files (no header)")
+    parser.add_argument("--alignment_format","-a",required = True,help = "Alignment format type for the input data",choices=["BAM","CRAM"])
+    parser.add_argument("--reference_fasta","-R",required = False,help = "Reference genome for CRAM support (if CRAM is used). [default: '']")
+    parser.add_argument("--chromosome","-c",required = False,help = "Sex chromosomes used to collect features. ",choices=["xy","x","y"])
     parser.add_argument("--type","-t",required = False,help = "Sequencing type. Note that if your don't provide an additional reference data, you must use --type. If the data type is WGS or WES, seGMM will automatic calculated all 5 features, otherwise if your data type is TGS you have to choice which sex chromosome you want to use and tell seGMM the SRY gene is included or not!",choices=["TGS","WES","WGS"])
     parser.add_argument("--output","-o",required = True,help = "Prefix of output directory.")
-    parser.add_argument("--genome","-g",required = False,help = "Genome version. Default is hg19. ",default='hg19',choices=["hg19","hg38"])
-    parser.add_argument("--SRY","-s",required = False,help = "Including SRY gene or not.",choices=["True","False"])
-    parser.add_argument("--reference","-r",required = False,help = "Reference file contain features.")
-    parser.add_argument("--uncertain_threshold","-u",required = False,help = "The threshold for detecting outliers in GMM model. Default is 0.1. The range of threshold is 0-1!",default=0.1)
-    parser.add_argument("--num_threshold","-n",required = False,help = "Number of additional threads to use. Default is 1.", default=1)
-    parser.add_argument("--Quality","-q",required = False,help = "Mapping quality threshold of reads to count. Default is 30.", default=30)
+    parser.add_argument("--genome","-g",required = False,help = "Genome version. [default: hg19]. ",choices=["hg19","hg38"])
+    parser.add_argument("--SRY","-s",required = False,help = "Extracting the average coverage of SRY gene.",choices=["True","False"])
+    parser.add_argument("--reference_additional","-r",required = False,help = "Reference file which contain features.")
+    parser.add_argument("--uncertain_threshold","-u",required = False,help = "The threshold for detecting outliers in GMM model. [default: 0.1]. The range of threshold is 0-1!",default=0.1)
+    parser.add_argument("--num_threshold","-n",required = False,help = "Number of additional threads to use. [default: 1].")
+    parser.add_argument("--Quality","-q",required = False,help = "Mapping quality threshold of reads to count. [default: 30].")
     genome="hg19"
     uncertain_threshold="0.1"
     num_threshold="1"
     quality="30"
+    fasta = " "
     args = parser.parse_args()
     print(header)
     try:
@@ -201,22 +248,28 @@ def main():
             num_threshold=str(args.num_threshold)
         if args.Quality:
             quality=str(args.Quality)
-        if not os.path.isfile(args.input):
+        if args.reference_fasta:
+            fasta = str(os.path.realpath(args.reference_fasta))
+        if (not os.path.isfile(fasta)) and fasta !=" ":
+            sys.exit('Error, the reference genome file for CRAM support is not exist!')
+        if args.alignment_format=="CRAM" and fasta==" ":
+            sys.exit('Error, please provide reference genome file for CRAM support!')
+        if not os.path.isfile(args.vcf):
             sys.exit('Error, the input vcf file is not exist, please check that you have provided the correct path!')
-        if not os.path.isfile(args.bam):
-            sys.exit('Error, the input bam file is not exist, please check that you have provided the correct path!')
+        if not os.path.isfile(args.input):
+            sys.exit('Error, the input bam/cram file is not exist, please check that you have provided the correct path!')
         if not os.path.exists(args.output):
             os.makedirs(args.output)
             print("Warning, the output file is not exist, seGMM creates the output folder of {s} first!".format(s=args.output))
-        if os.path.isfile(args.input) and os.path.isfile(args.bam):
-            if args.reference is None:
+        if os.path.isfile(args.input) and os.path.isfile(args.vcf) and os.path.exists(args.output):
+            if args.reference_additional is None:
                 if args.type == "WES" or args.type == "WGS":
                     print('Beginning to generate features at {T}'.format(T=time.ctime()))
                     start_time = time.time()
-                    collect_XH(args.input,args.output)
-                    collect_Xmap(args.bam,quality,num_threshold,args.output)
-                    collect_Ymap(args.bam,quality,num_threshold,args.output)
-                    collect_SRY(args.bam,quality,genome,args.output)
+                    collect_XH(args.vcf,args.output)
+                    collect_Xmap(args.input,args.alignment_format,fasta,quality,num_threshold,args.output)
+                    collect_Ymap(args.input,args.alignment_format,fasta,quality,num_threshold,args.output)
+                    collect_SRY(args.input,args.alignment_format,fasta,quality,genome,args.output)
                     print(">> Combine features into a single file\n")
                     cmd="join "+args.output+"/XH.sorted.txt "+args.output+"/Xmap.txt | join - "+args.output+"/Ymap.txt  | join - "+args.output+"/SRY.txt" +''' | awk 'BEGIN{OFS="\\t";print "sampleid","XH","Xmap","Ymap","XYratio","SRY"}{print $1,$2,$3,$4,$3/$4,$NF}' > '''+args.output+"/feature.txt"
                     runcmd(cmd)
@@ -227,8 +280,8 @@ def main():
                     if args.chromosome=="x" and args.SRY!="True":
                         print('Beginning to generate features at {T}'.format(T=time.ctime()))
                         start_time = time.time()
-                        collect_XH(args.input,args.output)
-                        collect_Xmap(args.bam,quality,num_threshold,args.output)
+                        collect_XH(args.vcf,args.output)
+                        collect_Xmap(args.input,args.alignment_format,fasta,quality,num_threshold,args.output)
                         print(">> Combine features into a single file\n")
                         cmd="join "+args.output+"/XH.sorted.txt "+args.output+"/Xmap.txt"+''' | awk 'BEGIN{OFS="\\t";print "sampleid","XH","Xmap"}{print $1,$2,$3}' > '''+args.output+"/feature.txt"
                         runcmd(cmd)
@@ -238,8 +291,8 @@ def main():
                     elif args.chromosome=="y" and args.SRY=="True":
                         print('Beginning to generate features at {T}'.format(T=time.ctime()))
                         start_time = time.time()
-                        collect_Ymap(args.bam,quality,num_threshold,args.output)
-                        collect_SRY(args.bam,quality,genome,args.output)
+                        collect_Ymap(args.input,args.alignment_format,fasta,quality,num_threshold,args.output)
+                        collect_SRY(args.input,args.alignment_format,fasta,quality,genome,args.output)
                         print(">> Combine features into a single file\n")
                         cmd="join "+args.output+"/Ymap.txt "+args.output+"/SRY.txt" +''' | awk 'BEGIN{OFS="\\t";print "sampleid","Ymap","SRY"}{print $1,$2,$NF}' >'''+args.output+"/feature.txt"
                         runcmd(cmd)
@@ -251,9 +304,9 @@ def main():
                     elif args.chromosome=="xy" and args.SRY=="False":
                         print('Beginning to generate features at {T}'.format(T=time.ctime()))
                         start_time = time.time()
-                        collect_XH(args.input,args.output)
-                        collect_Xmap(args.bam,quality,num_threshold,args.output)
-                        collect_Ymap(args.bam,quality,num_threshold,args.output)
+                        collect_XH(args.vcf,args.output)
+                        collect_Xmap(args.input,args.alignment_format,fasta,quality,num_threshold,args.output)
+                        collect_Ymap(args.input,args.alignment_format,fasta,quality,num_threshold,args.output)
                         print(">> Combine features into a single file\n")
                         cmd="join "+args.output+"/XH.sorted.txt "+args.output+"/Xmap.txt  | join - "+args.output+"/Ymap.txt "+''' | awk 'BEGIN{OFS="\\t";print "sampleid","XH","Xmap","Ymap","XYratio"}{print $1,$2,$3,$4,$3/$4}' >'''+args.output+"/feature.txt"
                         runcmd(cmd)
@@ -263,10 +316,10 @@ def main():
                     elif args.chromosome=="xy" and args.SRY=="True":
                         print('Beginning to generate features at {T}'.format(T=time.ctime()))
                         start_time = time.time()
-                        collect_XH(args.input,args.output)
-                        collect_Xmap(args.bam,quality,num_threshold,args.output)
-                        collect_Ymap(args.bam,quality,num_threshold,args.output)
-                        collect_SRY(args.bam,quality,genome,args.output)
+                        collect_XH(args.vcf,args.output)
+                        collect_Xmap(args.input,args.alignment_format,fasta,quality,num_threshold,args.output)
+                        collect_Ymap(args.input,args.alignment_format,fasta,quality,num_threshold,args.output)
+                        collect_SRY(args.input,args.alignment_format,fasta,quality,genome,args.output)
                         print(">> Combine features into a single file\n")
                         cmd="join "+args.output+"/XH.sorted.txt "+args.output+"/Xmap.txt  | join - "+args.output+"/Ymap.txt  | join - "+args.output+"/SRY.txt" +''' | awk 'BEGIN{OFS="\\t";print "sampleid","XH","Xmap","Ymap","XYratio","SRY"}{print $1,$2,$3,$4,$3/$4,$NF}' >'''+args.output+"/feature.txt"
                         runcmd(cmd)
@@ -280,11 +333,11 @@ def main():
                     print("Please select the sequencing method for you data!")
                     sys.exit()
             else:
-                if not os.path.isfile(args.reference):
+                if not os.path.isfile(args.reference_additional):
                     print("The reference data is not exist!")
                     sys.exit()
                 else:
-                    ref = os.path.abspath(args.reference)
+                    ref = os.path.abspath(args.reference_additional)
                     if args.chromosome is None:
                         order = ["XH","Xmap","Ymap","XYratio","SRY"]
                         features = ["sampleid"]
@@ -322,7 +375,7 @@ def main():
                                     XYratio = 1
                                     XYratio_index = i
                                 if not os.path.isfile(feature):
-                                    with_reference(features[i], args.input,args.bam,quality,num_threshold,genome,args.output)
+                                    with_reference(features[i], args.vcf,args.input,args.alignment_format,fasta,quality,num_threshold,genome,args.output)
                                 if idx==0:
                                     with open(feature) as f:
                                         line=f.readline()
