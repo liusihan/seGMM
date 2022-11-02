@@ -1,6 +1,12 @@
 # seGMM
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
+## What's new
+Version 1.3.0 fixes some critical bugs that affected the performance of the predicting Karyotype and changed the names of some parameters.
+
+Also, the CRAM file as input file is now possible.
+
+
 ## Background
 Computational tools have been developed to infer sex for genotype array, WES and WGS data such as plink, seXY and XYalign. Plink calculated F coefficient with X chromosome heterozygosity to infer sex for genotype array data. seXY considered both X chromosome heterozygosity and Y chromosome missingness to infer sex in genotype array data by logistic regression. XYalign extract read count mapped to sex chromosomes and calculated the ratio of X and Y counts to infer sex in WES and WGS data. However, evaluation the accuracy of these methods in targeted gene panel data is not yet fully and improvements in sex inference from gene panel data are warranted.In addition, PLINK, seXY, and XYalign could not report sex chromosome abnormality. 
 
