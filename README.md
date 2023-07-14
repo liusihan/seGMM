@@ -4,21 +4,21 @@
 ## What's new
 Version 1.3.0 fixes some critical bugs that affected the performance of the predicting Karyotype and changed the names of some parameters.
 
-Also, the CRAM file as input file is now possible.
+Also, the CRAM file as an input file is now possible.
 
 
 ## Background
-Computational tools have been developed to infer sex for genotype array, WES and WGS data such as plink, seXY and XYalign. Plink calculated F coefficient with X chromosome heterozygosity to infer sex for genotype array data. seXY considered both X chromosome heterozygosity and Y chromosome missingness to infer sex in genotype array data by logistic regression. XYalign extract read count mapped to sex chromosomes and calculated the ratio of X and Y counts to infer sex in WES and WGS data. However, evaluation the accuracy of these methods in targeted gene panel data is not yet fully and improvements in sex inference from gene panel data are warranted.In addition, PLINK, seXY, and XYalign could not report sex chromosome abnormality. 
+Computational tools have been developed to infer sex for genotype array, WES, and WGS data such as plink, seXY, and XYalign. Plink calculated the F coefficient with X chromosome heterozygosity to infer sex for genotype array data. seXY considered both X chromosome heterozygosity and Y chromosome missingness to infer sex in genotype array data by logistic regression. XYalign extract read count mapped to sex chromosomes and calculated the ratio of X and Y counts to infer sex in WES and WGS data. However, evaluation of the accuracy of these methods in targeted gene panel data is not yet entirely and improvements in sex inference from gene panel data are warranted. In addition, PLINK, seXY, and XYalign could not report sex chromosome abnormality. 
 
 ## Description
 `seGMM` applies unsupervised learning to determine the individual gender based on integrated information of the X and Y chromosomes from TGS, WES, or WGS data, providing the classification of six sex chromosome karyotypes (XX, XY, XYY, XXY, XXX, and X).<br>
 
-Importantly, in clinical practice, individual patient is usually sequenced to get a molecular diagnosis. Hence, seGMM permits users to provide an additional reference data, by combining the features from reference data and testing data, seGMM can ensure the accuracy for clinical application. 
+In clinical practice, individual patient is usually sequenced to get a molecular diagnosis. Hence, seGMM permits users to provide additional reference data, by combining the features from reference data and testing data, seGMM can ensure the accuracy for clinical applications. 
 
 ## Installation
 ### Robust install
 In order to install the software and dependencies, we recommend using a dedicated conda environment and `seGMM` is available on conda (installation time: ~ 15min).
-First you will need the `Conda` Python distribution and package manager. 
+First, you will need the `Conda` Python distribution and package manager. 
 
 ```shell
 # Download conda installer
@@ -61,27 +61,27 @@ Dependencies
   * [parallel](https://www.gnu.org/software/parallel/)
   * [mclust](https://cran.r-project.org/web/packages/mclust/index.html)
 
-Once the installation of seGMM has completed, you can run:
+Once the installation of seGMM has been completed, you can run:
 ```
 seGMM -h
 ```
-to print a list of all command-line options. If these commands fail with an error, then something as gone wrong during the installation process.
+to print a list of all command-line options. If these commands fail with an error, something goes wrong during the installation process.
 
 
 ## Parameters
 
 |Parameter|Type| Description|Required|
 |---|---|---|---|
-|--vcf/-vcf|character|Input VCF file (Either multi-sample or single-sample data. If the sample size is < 10, please combine with a reference data for prediction analysis). |``true``|
-|--input/-i|character| Input file contain sampleid and directory of bam/cram files. A text file which contain two columns with no header and split by space. The first column is the sample ID which match the sample ID in the input vcf file. The order of the sample ID in input file and the order of the sample ID in the VCF file can be inconsistent. **An example file has been provided in the test fold.**|``true``|
+|--vcf/-vcf|character|Input VCF file (Either multi-sample or single-sample data. If the sample size is < 10, please combine with reference data for prediction analysis). |``true``|
+|--input/-i|character| Input file contains sampleid and directory of bam/cram files. A text file contain two columns with no header and is split by space. The first column is the sample ID which matches the sample ID in the input vcf file. The order of the sample ID in the input file and the order of the sample ID in the VCF file can be inconsistent. **An example file has been provided in the test fold.**|``true``|
 |--alignment_format/-a|character| Alignment format type for the input data.**Optional is {BAM, CRAM}.**|``true``|
 |--reference_fasta/-R|character| Reference genome for **CRAM** support (if CRAM is used). [default: '']|``true``|
-|--chromosome/-c|character|Sex chromosomes used to collect features. **Optional is {xy,x,y}. If --reference is used, you can no longer use this parameter**|``false``|
-|--type/-t|character|Sequencing type. **Optional is {TGS, WES,WGS}.** Note that if your **don't provide an additional reference data, you must use --type.** If the data type is WGS or WES, seGMM will automatic calculated all 5 features, otherwise if your **sequencing type is TGS you have to choice which sex chromosome you want to use (--chromosome/-c) and tell seGMM the SRY gene is included or not (--SRY/-s)**|``false``|
+|--chromosome/-c|character|Sex chromosomes are used to collect features. **Optional is {xy,x,y}. If --reference is used, you can no longer use this parameter**|``false``|
+|--type/-t|character|Sequencing type. **Optional is {TGS, WES,WGS}.** Note that if your **don't provide additional reference data, you must use --type.** If the data type is WGS or WES, seGMM will automatically calculate all 5 features, otherwise if your **sequencing type is TGS you have to choose which sex chromosome you want to use (--chromosome/-c) and tell seGMM the SRY gene is included or not (--SRY/-s)**|``false``|
 |--output/-o|character|Prefix of output directory.|``true``|
 |--genome/-g|character|Genome version. **Default is hg19. Option is {hg19,hg38}**.|``false``|                        
 |--SRY/-s|boolean|If **True**, seGMM will calculate the mean depth of SRY gene. **Option is {True,False}**. |``false``|
-|--reference_additional/-r|character|The path of additional reference file contain features. We have provided two additinal files (**1000G.WES.txt and 1000G.WGS.txt in reference folder**). If **--reference is used, seGMM will automatically calculated the same features in the reference file. The file (tab split) must contain at least two features, and the column names must be: sampleid,XH,Xmap,Ymap,XYratio,SRY. The ordering of the columns is arbitrary, except for the first instance, which must be the sample name** |``false``|
+|--reference_additional/-r|character|The path of the additional reference file contain features. We have provided two additional files (**1000G.WES.txt and 1000G.WGS.txt in the reference folder**). If **--reference is used, seGMM will automatically calculate the same features in the reference file. The file (tab split) must contain at least two features, and the column names must be: sampleid,XH,Xmap,Ymap,XYratio,SRY. The ordering of the columns is arbitrary, except for the first instance, which must be the sample name** |``false``|
 |--uncertain_threshold/-u|numeric|The threshold for detecting outliers in GMM model. **Default is 0.1. The range of threshold is 0-1.**|``false``|
 |--num_threshold/-n|numeric|Number of additional threads to use. Default is 1.|``false``|
 |--Qulity/-q|numeric|Mapping quality threshold of reads to count. Default is 30.|``false``|
@@ -117,21 +117,21 @@ seGMM -vcf test.vcf -i Target.bam.list -t TGS -a BAM -o output -c x -s False
 * seGMM
 * Version 1.3.0
 * (C) 2021-2026 Sihan Liu
-* Research Institute of Rare disease / West china hospital
+* Research Institute of Rare Disease / West china hospital
 * GNU General Public License v3
 *********************************************************************
 
 Beginning to generate features at Tue Nov  1 17:17:09 2022
 >> Collected feature of X chromosome heterozygosity
-    Finish generate features of X chromosome heterozygosity at Tue Nov  1 17:17:13 2022
+    Finish generating features of X chromosome heterozygosity at Tue Nov  1 17:17:13 2022
 
 >> Collected feature of X mapping rate
-    Finish generate features of X mapping rate at Tue Nov  1 17:17:17 2022
+    Finish generating features of X mapping rate at Tue Nov  1 17:17:17 2022
 
 >> Combine features into a single file
 
 >> Running sample classification based on GMM model
-WARNING: ignoring environment value of R_HOME
+WARNING: ignoring the environment value of R_HOME
 [1] "There are 0 outliers samples based on prediction uncertainty"
 character(0)
 outliers
