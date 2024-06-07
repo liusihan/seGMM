@@ -2,6 +2,10 @@
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
 ## What's new
+### 20240607
+A Singularity image of seGMM is available.
+
+### 20221102
 Version 1.3.0 fixes some critical bugs that affected the performance of the predicting Karyotype and changed the names of some parameters.
 
 Also, the CRAM file as an input file is now possible.
@@ -16,7 +20,14 @@ Computational tools have been developed to infer sex for genotype array, WES, an
 In clinical practice, individual patient is usually sequenced to get a molecular diagnosis. Hence, seGMM permits users to provide additional reference data, by combining the features from reference data and testing data, seGMM can ensure the accuracy for clinical applications. 
 
 ## Installation
-### Robust install
+### Singularity
+Pull `Singularity image` from Singularity Library.
+```
+singularity pull segmm.sif library://sihanliu/segmm/segmm:latest
+singularity exec segmm.sif seGMM -h
+```
+
+### Conda
 In order to install the software and dependencies, we recommend using a dedicated conda environment and `seGMM` is available on conda (installation time: ~ 15min).
 First, you will need the `Conda` Python distribution and package manager. 
 
